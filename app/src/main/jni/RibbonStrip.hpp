@@ -31,8 +31,8 @@ public:
 	RibbonStrip(std::vector<Vector3> &_points1, std::vector<Vector3> &_points2, std::vector<bool> &smoothen, std::vector<Color> &colors, float thickness);
 	
 private:
-	void initMesh(float *points1, float *points2, std::vector<Color> &colors, int num);
-	void initMesh(float *points1, float *points2, std::vector<Color> &colors, int num, float thickness);
+	void initMesh(const float *points1, const float *points2, std::vector<Color> &colors, int num);
+	void initMesh(const float *points1, const float *points2, std::vector<Color> &colors, int num, float thickness);
 };
 
 #endif

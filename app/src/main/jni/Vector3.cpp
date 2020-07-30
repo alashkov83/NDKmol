@@ -41,7 +41,7 @@ float Vector3::dot(Vector3 &p, Vector3 &q) {
 }
 
 Vector3 Vector3::cross(Vector3 &p, Vector3 &q) {
-	return Vector3(p.y * q.z - p.z * q.y, p.z * q.x - p.x * q.z, p.x * q.y - p.y * q.x);
+	return {p.y * q.z - p.z * q.y, p.z * q.x - p.x * q.z, p.x * q.y - p.y * q.x};
 }
 
 double Vector3::norm(float x, float y, float z) {
@@ -49,7 +49,7 @@ double Vector3::norm(float x, float y, float z) {
 }
 
 Vector3& Vector3::normalize() {
-	float n = (float)norm(x, y, z);
+	auto n = (float)norm(x, y, z);
 	x /= n;
 	y /= n;
 	z /= n;

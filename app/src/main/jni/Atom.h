@@ -29,10 +29,10 @@ extern int test;
 class Atom {
 public:
 	std::string resn, elem, chain, atom, ss;
-	float x, y, z, b;
-	int resi, serial;
+	float x{}, y{}, z{}, b{};
+	int resi{}, serial{};
 	Color color;
-	bool hetflag;
+	bool hetflag{};
 	bool valid;
 	std::map<int, int> bonds;
 

@@ -26,21 +26,21 @@ std::map<std::string, float> ChemDatabase::vdwRadii;
 
 const float ChemDatabase::defaultRadius = 1.5f;
 
-Color ChemDatabase::getColor(std::string elem) {
+Color ChemDatabase::getColor(const std::string& elem) {
 	if (!ready) prepare();
 
-	std::map<std::string, unsigned int>::iterator it = ElementColors.find(elem);
+	auto it = ElementColors.find(elem);
 	if (it == ElementColors.end()) {
 //		__android_log_print(ANDROID_LOG_DEBUG,"getColor", "selecting default for atom %s", elem.c_str());
-		return Color(defaultColor);
+		return {defaultColor};
 	}
-	return Color(it->second);
+	return {it->second};
 }
 
-float ChemDatabase::getVdwRadius(std::string elem) {
+float ChemDatabase::getVdwRadius(const std::string& elem) {
 	if (!ready) prepare();
 
-	std::map<std::string, float>::iterator it = vdwRadii.find(elem);
+	auto it = vdwRadii.find(elem);
 	if (it == vdwRadii.end()) {
 		return defaultRadius;
 	}

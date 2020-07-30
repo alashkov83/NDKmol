@@ -28,8 +28,7 @@ MatRenderable::MatRenderable() : Renderable() {
 
 // Implicitly Renderable::~Renderable is also called after this.
 // children are deleted there. CHECK: Is it OK?
-MatRenderable::~MatRenderable() {
-}
+MatRenderable::~MatRenderable() = default;
 
 // we need to transpose the matrix
 void MatRenderable::addMatrix(Mat16 &mat) {
@@ -60,11 +59,11 @@ void MatRenderable::render() {
 	glPushMatrix();
 	setMatrix();
 
-	for (int i = 0, lim = matrices.size(); i < lim; i++) {
+	for (auto & matrice : matrices) {
 		glPushMatrix(); // FIXME: crash! <- What??
 #ifdef OPENGL_ES1
 //		__android_log_print(ANDROID_LOG_DEBUG, "NdkView","MatRenderable rendering %d/%d", i, lim);
-		glMultMatrixf(matrices[i].m);
+		glMultMatrixf(matrice.m);
 #else
         currentModelViewMatrix = multiplyMatrix(currentModelViewMatrix, matrices[i]);
 #endif

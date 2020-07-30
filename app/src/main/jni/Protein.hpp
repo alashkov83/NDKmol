@@ -27,8 +27,8 @@
 
 class Protein {
 public:
-	float a, b, c, alpha, beta, gamma;
-	float ax, ay, az, bx, by, bz, cx, cy, cz;
+	float a{}, b{}, c{}, alpha{}, beta{}, gamma{};
+	float ax{}, ay{}, az{}, bx{}, by{}, bz{}, cx{}, cy{}, cz{};
 	bool sdffile;
 	std::string spacegroup, biomtChains;
 	Atom atoms[100001];

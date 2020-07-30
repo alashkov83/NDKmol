@@ -27,11 +27,11 @@
 // FIXME: should inherit Line?
 class MarchingSquares: public Renderable {
 private:
-	int xd, zd, yd, size, size2, size3, maxvert, nPoints;;
+	int xd{}, zd, yd, size, size2, size3, maxvert, nPoints;;
 	int nc, nr, ns;
-	float isol;
-	float pout[12]; // 4 vertices * XYZ
-	Mat16 matrix;
+	float isol{};
+	float pout[12]{}; // 4 vertices * XYZ
+	Mat16 matrix{};
 	
 	void VIntX(int offset, float x, float y, float z, float valp1, float valp2);
 	void VIntY(int offset, float x, float y, float z, float valp1, float valp2);

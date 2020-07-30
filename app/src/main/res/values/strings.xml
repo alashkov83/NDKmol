@@ -117,5 +117,5 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="strucureDetails">Structure Details</string>
-    <string name="cactusExplanation">You can search 3D structure using NCI/CADD CACTUS chemical identifer resolver.\nFor example, try searching \'xenon hexafluoride\'.</string>
+    <string name="cactusExplanation" translatable="false">You can search 3D structure using NCI/CADD CACTUS chemical identifer resolver.\nFor example, try searching \'xenon hexafluoride\'.</string>
 </resources>

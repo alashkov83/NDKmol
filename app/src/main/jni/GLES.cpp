@@ -19,7 +19,7 @@
 
 #include "GLES.hpp"
 #include "Debug.hpp"
-#include "stdlib.h"
+#include <cstdlib>
 
 std::stack<Mat16> glStack;
 Mat16 currentModelViewMatrix;

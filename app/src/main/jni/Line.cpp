@@ -36,7 +36,7 @@ Line::Line(float *points, int _nPoints) {
 
 Line::Line(std::vector<Vector3> &points, std::vector<Color> &colors) {
 	nPoints = 0;
-	if (points.size() > 0) {
+	if (!points.empty()) {
 		vertexBuffer =  vectorToFloatArray(points);
 		colorBuffer = colorVectorToFloatArray(colors, 1);
 		nPoints = points.size();
@@ -71,7 +71,7 @@ void Line::render() {
 	if (nPoints > 0) {
 		glDisable(GL_LIGHTING);
 		glLineWidth(width);
-		if (vertexColors && colorBuffer != NULL) {
+		if (vertexColors && colorBuffer != nullptr) {
 			glEnableClientState(GL_COLOR_ARRAY);
 			glColorPointer(4, GL_FLOAT, 0, colorBuffer);
 		} else {

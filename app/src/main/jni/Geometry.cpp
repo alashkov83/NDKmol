@@ -20,7 +20,7 @@
 #include "Geometry.hpp"
 
 float* vectorToFloatArray(std::vector<Vector3> &points) {
-	float *ret = new float[points.size() * 3];
+	auto *ret = new float[points.size() * 3];
 	for (int i = 0, lim = points.size(); i < lim; i++) {
 		Vector3 v = points[i];
 		ret[3 * i] = v.x;
@@ -31,7 +31,7 @@ float* vectorToFloatArray(std::vector<Vector3> &points) {
 }
 
 unsigned short* vectorToShortArray(std::vector<unsigned short> &faces) {
-	unsigned short *ret = new unsigned short[faces.size()];
+	auto *ret = new unsigned short[faces.size()];
 	for (int i = 0, lim = faces.size(); i < lim; i++) {
 		ret[i] = faces[i];
 	}
@@ -39,11 +39,10 @@ unsigned short* vectorToShortArray(std::vector<unsigned short> &faces) {
 }
 
 float* colorVectorToFloatArray(std::vector<Color> &colors, int duplicate) {
-	float *ret = new float[colors.size() * duplicate * 4];
+	auto *ret = new float[colors.size() * duplicate * 4];
 	int offset = 0;
-	for (int i = 0, lim = colors.size(); i < lim; i++) {
-		Color color = colors[i];
-		for (int j = 0; j < duplicate; j++) {
+	for (auto color : colors) {
+			for (int j = 0; j < duplicate; j++) {
 			ret[offset] = color.r;
 			ret[offset + 1] = color.g;
 			ret[offset + 2] = color.b;
@@ -62,9 +61,9 @@ float* subdivide(std::vector<Vector3> &_points, int div, std::vector<bool> &smoo
 		if (!smoothen[i]) {
 			points.push_back(_points[i]);
 		} else {
-			points.push_back(Vector3((_points[i].x + _points[i + 1].x) / 2,
+			points.emplace_back((_points[i].x + _points[i + 1].x) / 2,
 							 (_points[i].y + _points[i + 1].y) / 2,
-							 (_points[i].z + _points[i + 1].z) / 2));
+							 (_points[i].z + _points[i + 1].z) / 2);
 		}
 	}
 	points.push_back(_points[_points.size() - 1]);
@@ -75,7 +74,7 @@ float* subdivide(std::vector<Vector3> &_points, int div, std::vector<bool> &smoo
 // Catmull-Rom subdivision
 // number of returned elements = ((points.size() - 1) * div + 1) * 3.
 float* subdivide(std::vector<Vector3> &points, int div) {
-	float *ret = new float[((points.size() - 1) * div + 1) * 3];
+	auto *ret = new float[((points.size() - 1) * div + 1) * 3];
 	
 	int offset = 0;
 	for (int i = -1, size = points.size(); i <= size - 3; i++) {

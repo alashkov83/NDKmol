@@ -18,8 +18,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "Matrix.hpp"
-#include "stdio.h"
-#include "math.h"
+#include <cstdio>
+#include <cmath>
 
 // In Open GL, matrix is stored in column-major
 // 0 4 8  12
@@ -220,7 +220,7 @@ Mat9 transposedInverseMatrix9(Mat16 &m) {
     double det =  a0 * ret.m[0] + a4 * ret.m[1] + a8 * ret.m[2];
     if (det != 0) {
         double det_inv = 1 / det;
-        for (int i = 0; i < 9; i++) ret.m[i] *= det_inv;
+        for (float & i : ret.m) i *= det_inv;
     } else {
         printf("Error while inverting matrix.\n");
         //ret = identityMatrix(); // TODO: report this error to the caller

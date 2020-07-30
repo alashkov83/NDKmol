@@ -34,17 +34,18 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
+import java.util.Objects;
 
 public class Downloader {
-	String uri;
-	String dest;
+	final String uri;
+	final String dest;
 	final int SUCCESS = 0;
 	final int ERROR = -1;
 	final int NO3DSDF = -2;
 	final int CANCELED = -3;
 
 
-	NDKmolActivity parent; // FIXME: this is not very good solution....
+	final NDKmolActivity parent; // FIXME: this is not very good solution....
 	
 	public Downloader(NDKmolActivity parent, String uri, String dest) {
 		Log.d("Downloader", "From " + uri + " To " + dest);
@@ -93,7 +94,7 @@ public class Downloader {
 
 				if (prefs.getBoolean(parent.getString(R.string.useProxy), false)) {
 					String proxyAddress = prefs.getString(parent.getString(R.string.proxyHost), "");
-					int proxyPort = Integer.parseInt(prefs.getString(parent.getString(R.string.proxyPort), "8080"));
+					int proxyPort = Integer.parseInt(Objects.requireNonNull(prefs.getString(parent.getString(R.string.proxyPort), "8080")));
 					
 					SocketAddress addr = new InetSocketAddress(proxyAddress, proxyPort);
 					Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
@@ -126,8 +127,7 @@ public class Downloader {
                     out = new FileOutputStream(dest);
                     int read;
 
-                    boolean first = true;
-                    while ((read = inp.read(buffer)) > 0) {
+					while ((read = inp.read(buffer)) > 0) {
                         if (isKilled) return CANCELED;
                         //					if (max > 0) progress.incrementProgressBy(read);
                         out.write(buffer, 0, read);

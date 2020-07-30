@@ -18,7 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "Debug.hpp"
-#include "stdarg.h"
+#include <cstdarg>
 
 #ifdef __ANDROID__
 #include <android/log.h>

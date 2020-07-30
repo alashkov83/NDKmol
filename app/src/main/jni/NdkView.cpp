@@ -51,11 +51,11 @@
 #define DIV 1
 
 // Global data TODO: support multiple models
-Atom *atoms = NULL;
-Protein *protein = NULL;
-CCP4file *mapfile = NULL;
-MarchingSquares *ms = NULL;
-Renderable *scene = NULL;
+Atom *atoms = nullptr;
+Protein *protein = nullptr;
+CCP4file *mapfile = nullptr;
+MarchingSquares *ms = nullptr;
+Renderable *scene = nullptr;
 
 int width, height;
 SceneInfo sceneInfo;
@@ -86,8 +86,8 @@ void colorChainbow(std::vector<int> &atomlist);
 void colorByBFactor(std::vector<int> &atomlist);
 void colorByPolarity(std::vector<int> &atomlist, Color polar, Color nonPolar);
 void colorByResidue(std::vector<int> &atomlist, std::map<std::string, Color> colorMap);
-void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth, std::string atomName);
-void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, std::string atomName);
+void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth, const std::string& atomName);
+void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std::string& atomName);
 bool isIdentity(Mat16 mat);
 void drawBondsAsStick(Renderable &scene, std::vector<int> &atomlist, float bondR, float atomR);
 void drawBondsAsLine(Renderable &scene, std::vector<int> &atomlist, float lineWidth);
@@ -103,22 +103,22 @@ void drawNucleicAcidLadder(Renderable &scene, std::vector<int> &atomlist);
 
 #ifdef __ANDROID__
 // onSurfaceChanged
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLResize
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLResize
 (JNIEnv *env, jclass clasz, jint width, jint height) {
 	nativeGLResize(width, height);
 }
 
 // onDrawFrame
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLRender
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLRender
 (JNIEnv *env, jclass clasz, jfloat objX, jfloat objY, jfloat objZ,
 		jfloat ax, jfloat ay, jfloat az, jfloat rot, jfloat cameraZ, jfloat slabNear, jfloat slabFar) {
 	nativeGLRender(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar);
 }
 
 // loadProtein
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadProtein
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadProtein
 (JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, NULL);
+	const char *filename = env->GetStringUTFChars(path, nullptr);
 
 	nativeLoadProtein(filename);
 
@@ -126,9 +126,9 @@ JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadProtein
 }
 
 // loadSDF
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadSDF
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadSDF
 (JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, NULL);
+	const char *filename = env->GetStringUTFChars(path, nullptr);
 
 	nativeLoadSDF(filename);
 
@@ -136,28 +136,28 @@ JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadSDF
 }
 
 // loadCCP4
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadCCP4
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadCCP4
 (JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, NULL);
+	const char *filename = env->GetStringUTFChars(path, nullptr);
 
 	nativeLoadCCP4(filename);
 
 	env->ReleaseStringUTFChars(path, filename);
 }
 
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeUpdateMap
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeUpdateMap
   (JNIEnv *env, jboolean force) {
 	nativeUpdateMap(force);
 }
 
 // onSurfaceCreated
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLInit
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLInit
 (JNIEnv *env, jclass clasz) {
 	nativeGLInit();
 }
 
 // prepareScene
-JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_buildScene
+extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_buildScene
 (JNIEnv *env, jclass clasz, jint proteinMode, jint hetatmMode, jint symmetryMode, jint colorMode,
 		jboolean showSidechain, jboolean showUnitcell, jint nucleicAcidMode, jboolean showSolvents,
 		jboolean doNotSmoothen, jboolean symopHetatms) {
@@ -165,11 +165,11 @@ JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_buildScene
 				nucleicAcidMode, showSolvents, false/*resetView*/, doNotSmoothen, symopHetatms);
 }
 
-JNIEXPORT jfloatArray JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeAdjustZoom
+extern "C" JNIEXPORT jfloatArray JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeAdjustZoom
 (JNIEnv *env, jclass clasz, jint symmetryMode) {
 	jfloatArray ret = env->NewFloatArray(7);
 
-	if (protein == NULL) return ret;
+	if (protein == nullptr) return ret;
 
 	jboolean dummy;
 	jfloat *array = env->GetFloatArrayElements(ret, &dummy);
@@ -229,7 +229,7 @@ void nativeGLRender(float objX, float objY, float objZ, float ax, float ay, floa
 }
 
 void nativeGLRender() {
-	if (scene == NULL) return;
+	if (scene == nullptr) return;
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_CULL_FACE);
@@ -260,15 +260,15 @@ void nativeLoadProtein(const char* filename) {
 	PDBReader pdb;
 	if (scene) {
 		delete scene;
-		scene = NULL;
+		scene = nullptr;
 	}
 	if (protein) {
 		delete protein;
-		protein = NULL;
+		protein = nullptr;
 	}
 	if (mapfile) { // clear map now. map must be deleted after MarchingSquares objects.
 		delete mapfile;
-		mapfile = NULL;
+		mapfile = nullptr;
 	}
 	protein = pdb.parsePDB(filename);
 	atoms = protein->atoms;
@@ -277,7 +277,7 @@ void nativeLoadProtein(const char* filename) {
 void nativeLoadCCP4(const char* filename) {
 	if (mapfile) {
 		delete mapfile;
-		mapfile = NULL;
+		mapfile = nullptr;
 	}
 	mapfile = new CCP4file(filename);
 }
@@ -286,18 +286,18 @@ void nativeLoadSDF(const char* filename) {
 	SDFReader sdf;
 	if (scene) {
 		delete scene;
-		scene = NULL;
+		scene = nullptr;
 	}
 	if (protein) {
 		delete protein;
-		protein = NULL;
+		protein = nullptr;
 	}
 	protein = sdf.parseSDF(filename);
 	atoms = protein->atoms;
 }
 
 void nativeAdjustZoom(float *objX, float *objY, float *objZ, float *cameraZ, float *slabNear, float *slabFar, bool bioMT) {
-	if (protein == NULL) return;
+	if (protein == nullptr) return;
 	
 	int nBiomt = protein->biomtMatrices.size();
 	std::vector<int> all = getAll();
@@ -312,11 +312,11 @@ void nativeAdjustZoom(float *objX, float *objY, float *objZ, float *cameraZ, flo
 	
 	if (bioMT && nBiomt > 0) {
 		Mat16 averagedMat = {};
-		for (std::map<int, Mat16>::iterator it = protein->biomtMatrices.begin(); it != protein->biomtMatrices.end(); ++it) {
-			Mat16 mat = it->second;
+		for (auto & biomtMatrice : protein->biomtMatrices) {
+			Mat16 mat = biomtMatrice.second;
 			for (int i = 0; i < 16; i++) averagedMat.m[i] += mat.m[i];
 		}
-		for (int i = 0; i < 16; i++) averagedMat.m[i] /= nBiomt;
+		for (float & i : averagedMat.m) i /= nBiomt;
 		Vector3 center(*objX, *objY, *objZ);
 		center.applyMat16(averagedMat);
 		*objX = center.x; *objY = center.y; *objZ = center.z;
@@ -327,7 +327,7 @@ void nativeAdjustZoom(float *objX, float *objY, float *objZ, float *cameraZ, flo
 	float FOV = 20;
 	
 	float x = extent[3] - extent[0], y = extent[4] - extent[1], z = extent[5] - extent[2];
-	float maxD = (float)std::sqrt(x * x + y * y + z * z);
+	auto maxD = (float)std::sqrt(x * x + y * y + z * z);
 	if (maxD < 25) maxD = 25;
 	if (nBiomt > 20) maxD = 800;
 	
@@ -342,15 +342,15 @@ void nativeAdjustZoom(float *objX, float *objY, float *objZ, float *cameraZ, flo
 // prepareScene
 void buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode, bool showSidechain, bool showUnitcell,
 				int nucleicAcidMode, bool showSolvents, bool resetView, bool doNotSmoothen, bool symopHetatms) {
-	if (scene != NULL) {
+	if (scene != nullptr) {
 		delete scene;
-		scene = NULL;
+		scene = nullptr;
 	}
-	if (protein == NULL) return;
+	if (protein == nullptr) return;
 
 
 	scene = new Renderable();
-	Renderable *asu = new Renderable();
+	auto *asu = new Renderable();
 
 	std::vector<int> all = getAll();
 	if (symmetryMode == SYMOP_BIOMT && protein->biomtChains.length() > 0) all = getChain(all, protein->biomtChains);
@@ -438,15 +438,15 @@ void buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode
 		drawUnitcell(*scene, lineWidth);
 	}
 
-	if (symmetryMode == SYMOP_BIOMT && protein->biomtMatrices.size() > 0) {
+	if (symmetryMode == SYMOP_BIOMT && !protein->biomtMatrices.empty()) {
 		drawSymmetryMates(*scene, asu, protein->biomtMatrices);
-	} else if (symmetryMode == SYMOP_PACKING && protein->symmetryMatrices.size() > 0) {
+	} else if (symmetryMode == SYMOP_PACKING && !protein->symmetryMatrices.empty()) {
 		drawSymmetryMatesWithTranslation(*scene, asu, protein->symmetryMatrices);
 	} else { // No SYMOP, No BIOMT defined, or NMR structure
 		scene->children.push_back(asu);
 	}
 	
-	if (1) { // TODO: MTZ test.
+	if (true) { // TODO: MTZ test.
 		if (mapfile) {
 			ms = new MarchingSquares(mapfile);
 			nativeUpdateMap(true);
@@ -536,8 +536,8 @@ void nativeGLInit() {
 float* getExtent(std::vector<int> &atomlist) {
 	float minx = 9999, miny = 9999, minz = 9999;
 	float maxx = -9999, maxy = -9999, maxz = -9999;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->x < minx) minx = atom->x;
@@ -548,7 +548,7 @@ float* getExtent(std::vector<int> &atomlist) {
 		if (atom->z > maxz) maxz = atom->z;
 	}
 
-	float *ret = (float*)malloc(sizeof(float) * 6);
+	auto *ret = (float*)malloc(sizeof(float) * 6);
 	ret[0] = minx; ret[1] = miny; ret[2] = minz; ret[3] = maxx; ret[4] = maxy; ret[5] = maxz;
 
 	return ret;
@@ -564,8 +564,8 @@ std::vector<int> getAll() { // TODO: should return reference?
 
 std::vector<int> getHetatms(std::vector<int> &atomlist) {
 	std::vector<int> ret;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->hetflag)	ret.push_back(atom->serial);
@@ -575,8 +575,8 @@ std::vector<int> getHetatms(std::vector<int> &atomlist) {
 
 std::vector<int> removeSolvents(std::vector<int> &atomlist) {
 	std::vector<int> ret;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->resn !="HOH") ret.push_back(atom->serial);
@@ -586,8 +586,8 @@ std::vector<int> removeSolvents(std::vector<int> &atomlist) {
 
 std::vector<int> getResiduesById(std::vector<int> &atomlist, std::set<int> &resi) {
 	std::vector<int> ret;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (resi.count(atom->resi) > 0) ret.push_back(atom->serial);
@@ -597,19 +597,19 @@ std::vector<int> getResiduesById(std::vector<int> &atomlist, std::set<int> &resi
 
 std::vector<int> getNonbonded(std::vector<int> &atomlist) {
 	std::vector<int> ret;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
-		if (atom->hetflag && atom->bonds.size() == 0) ret.push_back(atom->serial);
+		if (atom->hetflag && atom->bonds.empty()) ret.push_back(atom->serial);
 	}
 	return ret;
 }
 
 std::vector<int> getSideChain(std::vector<int> &atomlist) {
 	std::vector<int> ret;
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->hetflag) continue;
@@ -629,8 +629,8 @@ std::vector<int> getChain(std::vector<int> &atomlist, std::string &chain) {
 	for (int i = 0, lim = chain.length(); i < lim; i++)
 		chains.insert(chain.substr(i, 1));
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (chains.find(atom->chain) != chains.end()) ret.push_back(atom->serial);
@@ -639,11 +639,11 @@ std::vector<int> getChain(std::vector<int> &atomlist, std::string &chain) {
 }
 
 void colorByAtom(std::vector<int> &atomlist, std::map<std::string, unsigned int> &colors) {
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
-		std::map<std::string, unsigned int>::iterator it = colors.find(atom->elem);
+		auto it = colors.find(atom->elem);
 		if (it != colors.end()) {
 			atom->color = it->second;
 		} else {
@@ -653,8 +653,8 @@ void colorByAtom(std::vector<int> &atomlist, std::map<std::string, unsigned int>
 }
 
 void colorByStructure(std::vector<int> &atomlist, Color helixColor, Color sheetColor) {
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->atom != "CA" || atom->hetflag) continue;
@@ -664,8 +664,8 @@ void colorByStructure(std::vector<int> &atomlist, Color helixColor, Color sheetC
 }
 
 void colorByChain(std::vector<int> &atomlist) {
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (atom->atom != "CA" || atom->hetflag) continue;
@@ -674,8 +674,8 @@ void colorByChain(std::vector<int> &atomlist) {
 }
 
 void colorByResidue(std::vector<int> &atomlist, std::map<std::string, Color> colorMap) {
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		if (colorMap.count(atom->resn) > 0) {
@@ -687,8 +687,8 @@ void colorByResidue(std::vector<int> &atomlist, std::map<std::string, Color> col
 void colorChainbow(std::vector<int> &atomlist) {
 	int cnt = 0;
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 		
 		if (atom->atom != "CA" || atom->hetflag) continue;
@@ -698,8 +698,8 @@ void colorChainbow(std::vector<int> &atomlist) {
 	int total = cnt;
 	cnt = 0;
 	
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 		
 		if (atom->atom != "CA" || atom->hetflag) continue;
@@ -712,8 +712,8 @@ void colorChainbow(std::vector<int> &atomlist) {
 void colorByBFactor(std::vector<int> &atomlist) {
 	float minB = 1000, maxB = -1000;
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid || atom->hetflag) continue;
 		
 		if (atom->atom == "CA" || atom->atom == "O3'") {
@@ -724,8 +724,8 @@ void colorByBFactor(std::vector<int> &atomlist) {
 	float mid = (maxB + minB) / 2, range = (maxB - minB) / 2;
 	if (range < 0.01f && range > -0.01f) return;
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid || atom->hetflag) continue;
 
 		if (atom->atom == "CA" || atom->atom == "O3'") {
@@ -755,14 +755,14 @@ void drawAtomsAsStar(Renderable &scene, std::vector<int> &atomlist, float delta)
 	std::vector<Color> colors;
 	float pointsBase[] = {delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0, -delta};
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		int offset = 0;
 		float x = atom->x, y = atom->y, z = atom->z;
 		for (int j = 0; j < 6; j++) {
-			points.push_back(Vector3(x + pointsBase[offset], y + pointsBase[offset + 1], z + pointsBase[offset + 2]));
+			points.emplace_back(x + pointsBase[offset], y + pointsBase[offset + 1], z + pointsBase[offset + 2]);
 			offset += 3;
 			colors.push_back(atom->color);
 		}
@@ -773,15 +773,15 @@ void drawAtomsAsStar(Renderable &scene, std::vector<int> &atomlist, float delta)
 	scene.children.push_back(line);
 }
 
-void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth, std::string atomName) {
+void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth, const std::string& atomName) {
 	std::vector<Vector3> points;
 	std::vector<Color> colors;
 
 	std::string currentChain = "A";
 	int currentResi = -1;
 	
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 		
 		if ((atom->atom == atomName) && !atom->hetflag) {
@@ -790,7 +790,7 @@ void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float cur
 				points.clear();
 				colors.clear();
 			}
-			points.push_back(Vector3(atom->x, atom->y, atom->z));
+			points.emplace_back(atom->x, atom->y, atom->z);
 			colors.push_back(atom->color);
 			currentChain = atom->chain;
 			currentResi = atom->resi;
@@ -799,15 +799,15 @@ void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float cur
 	scene.children.push_back(new SmoothCurve(points, colors, curveWidth * 1.5, DIV));
 }
 
-void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, std::string atomName) {
+void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std::string& atomName) {
 	std::vector<Vector3> points;
 	std::vector<Color> colors;
 	std::vector<float> radii;
 	std::string currentChain = "A";
 	int currentResi = -1;
 	
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 		if ((atom->atom == atomName) && !atom->hetflag) {
 			if (currentChain != atom->chain || currentResi + 1 != atom->resi) {
@@ -817,7 +817,7 @@ void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, std::strin
 				radii.clear();
 			}
 			radii.push_back((atom->b > 0) ? atom->b / 100 : 0.3);
-			points.push_back(Vector3(atom->x, atom->y, atom->z));
+			points.emplace_back(atom->x, atom->y, atom->z);
 			colors.push_back(atom->color);
 			currentChain = atom->chain;
 			currentResi = atom->resi;
@@ -834,7 +834,7 @@ void drawNucleicAcidLadderSub(std::vector<Vector3> &vertices, std::vector<Vector
 		Vector3 tmp2(atoms[2].x - atoms[0].x, atoms[2].y - atoms[0].y, atoms[2].z - atoms[0].z);
 		Vector3 normal = Vector3::cross(tmp1, tmp2).normalize();
 
-		unsigned short baseFaceId = (unsigned short)vertices.size();
+		auto baseFaceId = (unsigned short)vertices.size();
 		for (int i = 0; i <= 5; i++) {
 			vertices.push_back(atoms[i]);
 			normals.push_back(normal);
@@ -852,7 +852,7 @@ void drawNucleicAcidLadderSub(std::vector<Vector3> &vertices, std::vector<Vector
 		Vector3 tmp2(atoms[6].x - atoms[3].x, atoms[6].y - atoms[3].y, atoms[6].z - atoms[3].z);
 		Vector3 normal = Vector3::cross(tmp1, tmp2).normalize();
 
-		unsigned short baseFaceId = (unsigned short)vertices.size();
+		auto baseFaceId = (unsigned short)vertices.size();
 		vertices.push_back(atoms[4]);
 		vertices.push_back(atoms[3]);
 		vertices.push_back(atoms[6]);
@@ -877,11 +877,11 @@ void drawNucleicAcidLadder(Renderable &scene, std::vector<int> &atomlist) {
 	Vector3 currentComponent[9]; for (int j = 0; j <= 8; j++) {currentComponent[j].x = -9999;}
 
 	std::string baseAtoms[] = {"N1", "C2", "N3", "C4", "C5", "C6", "N9", "C8", "N7"};
-	std::string currentChain = "";
+	std::string currentChain;
 	int currentResi = -1;
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid || atom->hetflag) continue;
 
 		if (atom->resi != currentResi || atom->chain != currentChain) {
@@ -905,7 +905,7 @@ void drawNucleicAcidLadder(Renderable &scene, std::vector<int> &atomlist) {
 	}
 	drawNucleicAcidLadderSub(vertices, normals, faces, colors, color, currentComponent);
 
-	Renderable *renderable = new Renderable();
+	auto *renderable = new Renderable();
 	renderable->colorBuffer = colorVectorToFloatArray(colors, 1);
 	renderable->vertexColors = true;
 	renderable->faceBuffer = vectorToShortArray(faces);
@@ -920,67 +920,67 @@ void drawBondsAsLineSub(std::vector<Vector3> &points, std::vector<Color> &colors
 	float dot = 0, dx = 0, dy = 0, dz = 0;
 	if (order > 1) { // Find the bond plane. TODO: Find inner side of a ring
 		Vector3 axis(atom1->x - atom2->x, atom1->y - atom2->y, atom1->z - atom2->z);
-		Atom *found = NULL;
-		for (int i = 0, lim = atom1->bonds.size(); i < lim && found != NULL; i++) {
+		Atom *found = nullptr;
+		for (int i = 0, lim = atom1->bonds.size(); i < lim && found != nullptr; i++) {
 			Atom *atom = atoms + atom1->bonds[i]; if (!atom->valid) continue;
 			if (atom->serial != atom2->serial && atom->elem != "H") found = atom;
 		}
-		for (int i = 0, lim = atom2->bonds.size(); i < lim && found != NULL; i++) {
+		for (int i = 0, lim = atom2->bonds.size(); i < lim && found != nullptr; i++) {
 			Atom *atom = atoms + atom2->bonds[i]; if (!atom->valid) continue;
 			if (atom->serial != atom1->serial && atom->elem != "H") found = atom;
 		}
-		if (found != NULL) {
+		if (found != nullptr) {
 			Vector3 tmp(atom1->x - found->x, atom1->y - found->y, atom1->z - found->z);
 			dot = Vector3::dot(tmp, axis);
 			dx = tmp.x - axis.x * dot; dy = tmp.y - axis.y * dot; dz = tmp.z - axis.z * dot;
 		}
-		if (found == NULL || std::abs(dot - 1) < 0.001) {
+		if (found == nullptr || std::abs(dot - 1) < 0.001) {
 			if (axis.x < 0.01 && axis.y < 0.01) {
 				dx = 0; dy = - axis.z; dz = axis.y;
 			} else {
 				dx = - axis.y; dy = axis.x; dz = 0;
 			}
 		}
-		float norm = (float)std::sqrt(dx * dx + dy * dy + dz * dz);
+		auto norm = (float)std::sqrt(dx * dx + dy * dy + dz * dz);
 		dx /= norm; dy /= norm; dz /= norm;
 		dx *= 0.15; dy *= 0.15; dz *= 0.15;
 	}
 
 	Color c = atom1->color;
 	float ax = atom1->x, ay = atom1->y, az = atom1->z;
-	points.push_back(Vector3(ax, ay, az));
+	points.emplace_back(ax, ay, az);
 	colors.push_back(c);
 	points.push_back(midpoint);
 	colors.push_back(c);
 	if (order > 1) {
-		points.push_back(Vector3(ax + dx, ay + dy, az + dz));
+		points.emplace_back(ax + dx, ay + dy, az + dz);
 		colors.push_back(c);
-		points.push_back(Vector3(midpoint.x + dx, midpoint.y + dy, midpoint.z + dz));
+		points.emplace_back(midpoint.x + dx, midpoint.y + dy, midpoint.z + dz);
 		colors.push_back(c);
 	}
 	if (order > 2) {
-		points.push_back(Vector3(ax + dx * 2, ay + dy * 2, az + dz * 2));
+		points.emplace_back(ax + dx * 2, ay + dy * 2, az + dz * 2);
 		colors.push_back(c);
-		points.push_back(Vector3(midpoint.x + dx * 2, midpoint.y + dy * 2, midpoint.z + dz * 2));
+		points.emplace_back(midpoint.x + dx * 2, midpoint.y + dy * 2, midpoint.z + dz * 2);
 		colors.push_back(c);
 	}
 
 	ax = atom2->x; ay = atom2->y; az = atom2->z;
 	c = atom2->color;
-	points.push_back(Vector3(ax, ay, az));
+	points.emplace_back(ax, ay, az);
 	colors.push_back(c);
 	points.push_back(midpoint);
 	colors.push_back(c);
 	if (order > 1) {
-		points.push_back(Vector3(ax + dx, ay + dy, az + dz));
+		points.emplace_back(ax + dx, ay + dy, az + dz);
 		colors.push_back(c);
-		points.push_back(Vector3(midpoint.x + dx, midpoint.y + dy, midpoint.z + dz));
+		points.emplace_back(midpoint.x + dx, midpoint.y + dy, midpoint.z + dz);
 		colors.push_back(c);
 	}
 	if (order > 2) {
-		points.push_back(Vector3(ax + dx * 2, ay + dy * 2, az + dz * 2));
+		points.emplace_back(ax + dx * 2, ay + dy * 2, az + dz * 2);
 		colors.push_back(c);
-		points.push_back(Vector3(midpoint.x + dx * 2, midpoint.y + dy * 2, midpoint.z + dz * 2));
+		points.emplace_back(midpoint.x + dx * 2, midpoint.y + dy * 2, midpoint.z + dz * 2);
 		colors.push_back(c);
 	}
 }
@@ -988,22 +988,22 @@ void drawBondsAsLineSub(std::vector<Vector3> &points, std::vector<Color> &colors
 void drawNucleicAcidAsLine(Renderable &scene, std::vector<int> &atomlist) {
 	std::vector<Vector3> points;
 	std::vector<Color> colors;
-	std::string currentChain = "";
+	std::string currentChain;
 	int currentResi = -1;
-	Atom *start = NULL, *end = NULL;
+	Atom *start = nullptr, *end = nullptr;
 
 	for (int i = 1, lim = atomlist.size(); i < lim; i++) {
 		Atom *atom = atoms + atomlist[i];
 		if (!atom->valid || atom->hetflag) continue;
 
 		if (atom->resi != currentResi || atom->chain !=currentChain) {
-			if (start != NULL && end != NULL) {
-				points.push_back(Vector3(start->x, start->y, start->z));
+			if (start != nullptr && end != nullptr) {
+				points.emplace_back(start->x, start->y, start->z);
 				colors.push_back(start->color);
-				points.push_back(Vector3(end->x, end->y, end->z));
+				points.emplace_back(end->x, end->y, end->z);
 				colors.push_back(start->color);
 			}
-			start = NULL; end = NULL;
+			start = nullptr; end = nullptr;
 		}
 		if (atom->atom == "O3'") start = atom;
 		if (atom->resn == "A" || atom->resn == "G" || atom->resn == "DA" || atom->resn == "DG") {
@@ -1013,10 +1013,10 @@ void drawNucleicAcidAsLine(Renderable &scene, std::vector<int> &atomlist) {
 		}
 		currentResi = atom->resi; currentChain = atom->chain;
 	}
-	if (start != NULL && end != NULL) {
-		points.push_back(Vector3(start->x, start->y, start->z));
+	if (start != nullptr && end != nullptr) {
+		points.emplace_back(start->x, start->y, start->z);
 		colors.push_back(start->color);
-		points.push_back(Vector3(end->x, end->y, end->z));
+		points.emplace_back(end->x, end->y, end->z);
 		colors.push_back(start->color);
 	}
 	Line *line = new Line(points, colors);
@@ -1030,9 +1030,9 @@ void drawNucleicAcidCartoon(Renderable &scene, std::vector<int> &atomlist, int d
 }
 
 void drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div, bool fill, float thickness) {
-	std::vector<Vector3> *points = new std::vector<Vector3>[num];
+	auto *points = new std::vector<Vector3>[num];
 	std::vector<Color> colors;
-	std::string currentChain = "";
+	std::string currentChain;
 	int currentResi = -1;
 	Vector3 currentO3(-9999, 0, 0);
 	Vector3 prevOO(-9999, 0, 0);
@@ -1047,8 +1047,8 @@ void drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int nu
 					if (currentO3.x != -9999) {
 						for (int j = 0; j < num; j++) {
 							float delta = -1 + 2.0f / (num - 1) * j;
-							points[j].push_back(Vector3(currentO3.x + prevOO.x * delta,
-														currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta));
+							points[j].emplace_back(currentO3.x + prevOO.x * delta,
+														currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta);
 						}
 					}
 					if (fill) scene.children.push_back(new RibbonStrip(points[0], points[1], colors, thickness));
@@ -1075,8 +1075,8 @@ void drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int nu
 				prevOO = O;
 				for (int j = 0; j < num; j++) {
 					float delta = -1 + 2.0f / (num - 1) * j;
-					points[j].push_back(Vector3(currentO3.x + prevOO.x * delta,
-												currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta));
+					points[j].emplace_back(currentO3.x + prevOO.x * delta,
+												currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta);
 				}
 				currentO3.x = -9999;
 			}
@@ -1085,8 +1085,8 @@ void drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int nu
 	if (currentO3.x != -9999) {
 		for (int j = 0; j < num; j++) {
 			float delta = -1 + 2.0f / (num - 1) * j;
-			points[j].push_back(Vector3(currentO3.x + prevOO.x * delta,
-										currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta));
+			points[j].emplace_back(currentO3.x + prevOO.x * delta,
+										currentO3.y + prevOO.y * delta, currentO3.z + prevOO.z * delta);
 		}
 	}
 	if (fill) scene.children.push_back(new RibbonStrip(points[0], points[1], colors, thickness));
@@ -1101,10 +1101,10 @@ void drawCartoon(Renderable &scene, std::vector<int> &atomlist, int div, bool do
 }
 
 void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div, bool fill, bool doNotSmoothen, float thickness) {
-	std::vector<Vector3> *points = new std::vector<Vector3>[num];
+	auto *points = new std::vector<Vector3>[num];
 	std::vector<Color> colors;
 	std::vector <bool> smoothen;
-	std::string currentChain = "", ss = "";
+	std::string currentChain, ss;
 	int currentResi = -1;
 	Vector3 prevCO(-9999, 0, 0), currentCA(0, 0, 0);
 
@@ -1139,8 +1139,8 @@ void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div,
 				prevCO = O;
 				for (int j = 0; j < num; j++) {
 					float delta = -1 + 2.0f / (num - 1) * j;
-					points[j].push_back(Vector3(currentCA.x + prevCO.x * delta,
-												currentCA.y + prevCO.y * delta, currentCA.z + prevCO.z * delta));
+					points[j].emplace_back(currentCA.x + prevCO.x * delta,
+												currentCA.y + prevCO.y * delta, currentCA.z + prevCO.z * delta);
 				}
 				smoothen.push_back(!doNotSmoothen && ss == "s");
 			}
@@ -1202,7 +1202,7 @@ void drawBondsAsLine(Renderable &scene, std::vector<int> &atomlist, float lineWi
 			drawBondsAsLineSub(points, colors, atom1, atom2, order);
 		}
 
-		for (std::map<int, int>::iterator it = atom1->bonds.begin(), itlim = atom1->bonds.end();
+		for (auto it = atom1->bonds.begin(), itlim = atom1->bonds.end();
 			 it != itlim; ++it) {
 			int j = it->first, order = it->second;
 			if (order < 1) continue;
@@ -1234,8 +1234,8 @@ void drawAtomsAsVdWSphere(Renderable &scene, std::vector<int> &atomlist) {
 	std::vector<Color> colors;
 	std::vector<float> radii;
 
-	for (int i = 0, lim = atomlist.size(); i < lim; i++) {
-		Atom *atom = atoms + atomlist[i];
+	for (int i : atomlist) {
+		Atom *atom = atoms + i;
 		if (!atom->valid) continue;
 
 		Renderable *sphere = new VBOSphere(atom->x, atom->y, atom->z, ChemDatabase::getVdwRadius(atom->elem), atom->color);
@@ -1249,14 +1249,14 @@ void drawAtomsAsVdWSphere(Renderable &scene, std::vector<int> &atomlist) {
 }
 
 void drawSymmetryMates(Renderable &scene, Renderable *asu, std::map<int, Mat16> biomtMatrices) {
-	if (biomtMatrices.size() == 0) return;
+	if (biomtMatrices.empty()) return;
 
-	MatRenderable *symmetryMate = new MatRenderable();
+	auto *symmetryMate = new MatRenderable();
 	symmetryMate->children.push_back(asu);
 	scene.children.push_back(symmetryMate);
 	
-	for (std::map<int, Mat16>::iterator it = biomtMatrices.begin(); it != biomtMatrices.end(); ++it) {
-		Mat16 mat = it->second;
+	for (auto & biomtMatrice : biomtMatrices) {
+		Mat16 mat = biomtMatrice.second;
 //		if (isIdentity(mat)) continue;
 		
 		symmetryMate->addMatrix(mat);
@@ -1264,12 +1264,12 @@ void drawSymmetryMates(Renderable &scene, Renderable *asu, std::map<int, Mat16> 
 }
 
 void drawSymmetryMatesWithTranslation(Renderable &scene, Renderable *asu, std::map<int, Mat16> matrices) {
-	MatRenderable *symmetryMate = new MatRenderable();
+	auto *symmetryMate = new MatRenderable();
 	symmetryMate->children.push_back(asu);
 	scene.children.push_back(symmetryMate);
 
-	for (std::map<int, Mat16>::iterator it = matrices.begin(); it != matrices.end(); ++it) {
-		Mat16 mat = it->second;
+	for (auto & matrice : matrices) {
+		Mat16 mat = matrice.second;
 
 		for (int a = -1; a <= 0; a++) {
 			for (int b = -1; b <= 0; b++) {
@@ -1299,7 +1299,7 @@ void drawUnitcell(Renderable &scene, float width) {
 		{protein->cx + protein->ax + protein->bx, protein->cy + protein->ay + protein->by, protein->cz + protein->az + protein->bz}};
 	int edges[] = {0, 1, 0, 2, 1, 3, 2, 3, 4, 5, 4, 6, 5, 7, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7};
 
-	float *points = new float[24 * 3];
+	auto *points = new float[24 * 3];
 	for (int i = 0; i < 24; i++) {
 		points[i * 3] = vertices[edges[i]][0];
 		points[i * 3 + 1] = vertices[edges[i]][1];

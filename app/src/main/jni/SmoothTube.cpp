@@ -33,9 +33,9 @@ SmoothTube::SmoothTube(std::vector<Vector3> &_points, std::vector<Color> &colors
 	int nDividedPoints = ((_points.size() - 1) * axisDiv + 1);
 	_points.clear();
 
-	float *vertices = new float[nDividedPoints * 3 * circleDiv];
-	float *normals = new float[nDividedPoints * 3 * circleDiv];
-	unsigned short *faces = new unsigned short[(nDividedPoints - 1) * circleDiv * 2 * 3];
+	auto *vertices = new float[nDividedPoints * 3 * circleDiv];
+	auto *normals = new float[nDividedPoints * 3 * circleDiv];
+	auto *faces = new unsigned short[(nDividedPoints - 1) * circleDiv * 2 * 3];
 	int voffset = 0;
 	int foffset = 0;
 
@@ -73,8 +73,8 @@ SmoothTube::SmoothTube(std::vector<Vector3> &_points, std::vector<Color> &colors
 		}
 
 		for (int j = 0; j < circleDiv; j++) {
-			float angle = (float)(2 * M_PI / circleDiv * j);
-			float c = (float)std::cos(angle), s = (float)std::sin(angle);
+			auto angle = (float)(2 * M_PI / circleDiv * j);
+			auto c = (float)std::cos(angle), s = (float)std::sin(angle);
 			normals[voffset] = c * axis1.x + s * axis2.x;
 			vertices[voffset] = points[poffset] + normals[voffset];
 			voffset++;
@@ -85,17 +85,16 @@ SmoothTube::SmoothTube(std::vector<Vector3> &_points, std::vector<Color> &colors
 			vertices[voffset] = points[poffset + 2] + normals[voffset];
 			voffset++;
 		}
-		poffset += 3;
 	}
 
 	voffset = 0;
 	for (int i = 0, lim = nDividedPoints - 1; i < lim; i++) {
 		int reg = 0;
 		int vo1 = voffset * 3, vo2 = vo1 + circleDiv * 3;
-		float r1 = (float) Vector3::norm(vertices[vo1] - vertices[vo2],
+		auto r1 = (float) Vector3::norm(vertices[vo1] - vertices[vo2],
 				vertices[vo1 + 1] - vertices[vo2 + 1],
 				vertices[vo1 + 2] - vertices[vo2 + 2]);
-		float r2 = (float) Vector3::norm(vertices[vo1] - vertices[vo2 + 3],
+		auto r2 = (float) Vector3::norm(vertices[vo1] - vertices[vo2 + 3],
 				vertices[vo1 + 1] - vertices[vo2 + 4],
 				vertices[vo1 + 2] - vertices[vo2 + 5]);
 		if (r1 > r2) {r1 = r2; reg = 1;}

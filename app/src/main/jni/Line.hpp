@@ -27,8 +27,8 @@
 
 class Line: public Renderable {
 public:
-	float width;
-	bool discrete;
+	float width{};
+	bool discrete{};
 	int nPoints;
 
 	Line(std::vector<Vector3> &points);

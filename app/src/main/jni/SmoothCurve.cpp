@@ -23,7 +23,7 @@ SmoothCurve::SmoothCurve(std::vector<Vector3> &points, std::vector<Color> &color
  : Line() {
 	if (points.size() > 1) {
 		vertexBuffer = subdivide(points, div);
-		if (colors.size() > 0) {
+		if (!colors.empty()) {
 			colorBuffer = colorVectorToFloatArray(colors, div);
 			nPoints = ((points.size() - 1) * div + 1);
 			vertexColors = true;
@@ -38,7 +38,7 @@ SmoothCurve::SmoothCurve(std::vector<Vector3> &points, std::vector<bool> &smooth
 : Line() {
 	if (points.size() > 1) {
 		vertexBuffer = subdivide(points, div, smoothen);
-		if (colors.size() > 0) {
+		if (!colors.empty()) {
 			colorBuffer = colorVectorToFloatArray(colors, div);
 			nPoints = ((points.size() - 1) * div + 1);
 			vertexColors = true;

@@ -27,7 +27,7 @@ class SDFReader {
 public:
 	Atom *atoms;
 	SDFReader();
-	Protein* parseSDF(std::string filename);
+	Protein* parseSDF(const std::string& filename);
 
 private:
 	Protein *protein;

@@ -22,7 +22,7 @@
 #include <cmath>
 
 RibbonStrip::RibbonStrip(std::vector<Vector3> &_points1, std::vector<Vector3> &_points2, std::vector<bool> &smoothen, std::vector<Color> &colors, float thickness): Renderable() {
-	if (_points1.size() < 1) return; // §≥§Ï§¨§¢§Î§´§È°¢nFaces §ŒΩÈ¥¸≤Ω§ÚÀ∫§Ï§ §§!
+	if (_points1.empty()) return; // §≥§Ï§¨§¢§Î§´§È°¢nFaces §ŒΩÈ¥¸≤Ω§ÚÀ∫§Ï§ §§!
 	
 	float *points1 = subdivide(_points1, div, smoothen);
 	float *points2 = subdivide(_points2, div, smoothen);
@@ -37,7 +37,7 @@ RibbonStrip::RibbonStrip(std::vector<Vector3> &_points1, std::vector<Vector3> &_
 
 
 RibbonStrip::RibbonStrip(std::vector<Vector3> &_points1, std::vector<Vector3> &_points2, std::vector<Color> &colors, float thickness): Renderable() {
-	if (_points1.size() < 1) return; // §≥§Ï§¨§¢§Î§´§È°¢nFaces §ŒΩÈ¥¸≤Ω§ÚÀ∫§Ï§ §§!
+	if (_points1.empty()) return; // §≥§Ï§¨§¢§Î§´§È°¢nFaces §ŒΩÈ¥¸≤Ω§ÚÀ∫§Ï§ §§!
 
 	float *points1 = subdivide(_points1, div);
 	float *points2 = subdivide(_points2, div);
@@ -50,7 +50,7 @@ RibbonStrip::RibbonStrip(std::vector<Vector3> &_points1, std::vector<Vector3> &_
 }
 
 // points1 and points2 will be deleted within this method
-void RibbonStrip::initMesh(float *points1, float *points2, std::vector<Color> &colors, int num, float thickness) {
+void RibbonStrip::initMesh(const float *points1, const float *points2, std::vector<Color> &colors, int num, float thickness) {
 	vertexColors = true;
 	int size = ((num - 1) * div + 1); // number of segments
 	vertexBuffer = new float[(size * 8 + 4) * 3]; // 8 triangles / segment + cap (4 triangles)
@@ -105,8 +105,8 @@ void RibbonStrip::initMesh(float *points1, float *points2, std::vector<Color> &c
 					7, 3, -5, 7, -5, -1, -3, -7, 1, -3, 1, 5}; // sides
 	for (int i = 1; i < size; i++) {
 		int faceOffset = i * 8;
-		for (int j = 0; j < 24; j++) {
-			*(fb++) = (short)(faceOffset + faces[j]);
+		for (int face : faces) {
+			*(fb++) = (short)(faceOffset + face);
 		}
 	}
 	
@@ -182,7 +182,7 @@ void RibbonStrip::initMesh(float *points1, float *points2, std::vector<Color> &c
 
 
 // points1 and points2 will be deleted within this method
-void RibbonStrip::initMesh(float *points1, float *points2, std::vector<Color> &colors, int num) {
+void RibbonStrip::initMesh(const float *points1, const float *points2, std::vector<Color> &colors, int num) {
 	vertexColors = true;
 	int size = ((num - 1) * div + 1); // number of segments
 	
@@ -237,7 +237,7 @@ void RibbonStrip::initMesh(float *points1, float *points2, std::vector<Color> &c
 		float ny = az * bx - ax * bz;
 		float nz = ax * by - ay * bx;
 		
-		float norm = (float)std::sqrt(nx * nx + ny * ny + nz * nz);
+		auto norm = (float)std::sqrt(nx * nx + ny * ny + nz * nz);
 		nx /= norm; ny /= norm; nz /= norm;
 		
 		*(vnb++) = nx;

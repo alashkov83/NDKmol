@@ -27,7 +27,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -53,7 +52,6 @@ public class NDKmolActivity extends Activity {
 	private long lastTouchTime;
 	private int touchMode = 2;
 	private int prevPointerCount = 0;
-	private boolean multiTouchEnabled = false;
 	private String currentFilename;
 	private final int IntentForURI = 1;
 	private final int IntentForPreferences = 2;
@@ -73,27 +71,26 @@ public class NDKmolActivity extends Activity {
 
 		try {
 			FileWriter out= new FileWriter(target);
-			out.write(readResource(R.raw.initial));
+			out.write(readResource());
 			out.close();
 		} catch (Exception e) {
 			Log.d("initializeResource", "failed: " + e.toString());
 		}
 	}
 
-	String readResource(int resourceId) {
+	String readResource() {
 		String ret = ""; 
 
 		Resources res = this.getResources();
-		InputStream st = null;
+		InputStream st;
 		try {
-			st = res.openRawResource(resourceId);
+			st = res.openRawResource(R.raw.initial);
 			byte[] buffer = new byte[st.available()];
 			while((st.read(buffer)) != -1) {}
 			st.close();
 			ret = new String(buffer);
 		} catch (Exception e) {
 			Log.d("ResourceOpen", e.toString());
-		} finally{
 		}
 		return ret;
 	}
@@ -102,10 +99,6 @@ public class NDKmolActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (Build.VERSION.SDK_INT >= 6) {
-			multiTouchEnabled = true;
-		}
 
 		initializeResource();
 
@@ -162,6 +155,7 @@ public class NDKmolActivity extends Activity {
 			reader.close();
 			alert("First 50KB of the file: \n\n" + header);
 		} catch (Exception e) {
+			e.getStackTrace();
 		}
 	}
 	
@@ -224,11 +218,7 @@ public class NDKmolActivity extends Activity {
 		if (view == null) return;
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean(getString(R.string.enableFog), false)) {
-			view.fogEnabled = true;
-		} else {
-			view.fogEnabled = false;
-		}
+		view.fogEnabled = prefs.getBoolean(getString(R.string.enableFog), false);
 	}
 
 	void openFile(String filePath) {
@@ -618,10 +608,8 @@ public class NDKmolActivity extends Activity {
 		float x = e.getX();
 		float y = e.getY();
 		int pointerCount = 1;
-		float distance = -1; 
-		if (multiTouchEnabled) {
-			pointerCount = MultitouchWrapper.getPointerCount(e);
-		}
+		float distance = -1;
+		pointerCount = MultitouchWrapper.getPointerCount(e);
 		if (pointerCount > 1) {
 			float x1 = MultitouchWrapper.getX(e, 0);
 			float x2 = MultitouchWrapper.getX(e, 1);
@@ -650,7 +638,7 @@ public class NDKmolActivity extends Activity {
 				view.objX = -translation.x * 100;
 				view.objY = -translation.y *100;
 				view.objZ = -translation.z * 100;
-				view.nativeUpdateMap(false); // TODO: FIXME: This is not working! Should use SetScene.
+				NdkView.nativeUpdateMap(false); // TODO: FIXME: This is not working! Should use SetScene.
 				glSV.requestRender(); 
 			}
 			lastTouchTime = currentTime;
@@ -691,9 +679,8 @@ public class NDKmolActivity extends Activity {
 						view.objX = currentX + translation.x;
 						view.objY = currentY + translation.y;
 						view.objZ = currentZ + translation.z;
-						view.nativeUpdateMap(false);
+						NdkView.nativeUpdateMap(false);
 					}
-					glSV.requestRender();
 				} else {
 					if (touchMode == 0) { // translation
 						Log.d("NDKmol", "cameraZ: " + view.cameraZ);
@@ -705,7 +692,7 @@ public class NDKmolActivity extends Activity {
 						view.objX = currentX + translation.x;
 						view.objY = currentY + translation.y;
 						view.objZ = currentZ + translation.z;
-						view.nativeUpdateMap(false);	
+						NdkView.nativeUpdateMap(false);
 					} else if (touchMode == 1) { // zoom
 						view.cameraZ = currentCameraZ + (startY - y) * 0.5f;
 					} else	if (touchMode == 2) { // rotate
@@ -734,8 +721,8 @@ public class NDKmolActivity extends Activity {
 						view.slabNear = slabMid - slabWidth;
 						view.slabFar = slabMid + slabWidth;
 					}
-					glSV.requestRender();
 				}
+				glSV.requestRender();
 			}
 			break;
 		}

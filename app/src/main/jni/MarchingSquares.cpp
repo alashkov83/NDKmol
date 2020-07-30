@@ -60,8 +60,7 @@
 
 void MarchingSquares::prepareVBO() {
 // FIXME: meanwhile, we do not use VBO since mesh will be updated often
-	return;
-}
+	}
 
 void MarchingSquares::setMatrix() {
 #ifdef OPENGL_ES1
@@ -207,7 +206,7 @@ void MarchingSquares::polygonizeYZ(int fx, int fy, int fz, int q) {
 		VIntZ(3, fx, fy2, fz, field2, field3); // s2
 		VIntY(6, fx, fy, fz2, field1, field3); // s1
 		VIntY(9, fx, fy, fz, field0, field2); // s3
-		for (int i = 0; i < 12; i++) vertexBuffer[nPoints++] = pout[i];
+		for (float i : pout) vertexBuffer[nPoints++] = i;
 		return;
 	}
 	
@@ -251,7 +250,7 @@ void MarchingSquares::polygonizeXY(int fx, int fy, int fz, int q) {
 		VIntX(3, fx, fy2, fz, field2, field3); // s2
 		VIntY(6, fx2, fy, fz, field1, field3); // s1
 		VIntY(9, fx, fy, fz, field0, field2); // s3
-		for (int i = 0; i < 12; i++) vertexBuffer[nPoints++] = pout[i];
+		for (float i : pout) vertexBuffer[nPoints++] = i;
 		return;
 	}
 	
@@ -295,7 +294,7 @@ void MarchingSquares::polygonizeXZ(int fx, int fy, int fz, int q) {
 		VIntX(3, fx, fy, fz2, field2, field3); // s2
 		VIntZ(6, fx2, fy, fz, field1, field3); // s1
 		VIntZ(9, fx, fy, fz, field0, field2); // s3
-		for (int i = 0; i < 12; i++) vertexBuffer[nPoints++] = pout[i];
+		for (float i : pout) vertexBuffer[nPoints++] = i;
 		return;
 	}
 	

@@ -27,7 +27,7 @@
 
 int VBOSphere::faceVBO = -1, VBOSphere::vertexVBO = -1, VBOSphere::vertexNormalVBO = -1, VBOSphere::faceCount = -1;
 
-VBOSphere::VBOSphere() {}
+VBOSphere::VBOSphere() = default;
 
 VBOSphere::VBOSphere(float x, float y, float z, float radius, Color c) {
 	scalex = scaley = scalez = radius;
@@ -75,7 +75,7 @@ void VBOSphere::render() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
 #ifdef OPENGL_ES1
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glVertexPointer(3, GL_FLOAT, 0, nullptr);
 #else
 	glEnableVertexAttribArray(shaderVertexPosition);
     glVertexAttribPointer(shaderVertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -84,14 +84,14 @@ void VBOSphere::render() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexNormalVBO);
 #ifdef OPENGL_ES1
 	glEnableClientState(GL_NORMAL_ARRAY);
-	glNormalPointer(GL_FLOAT, 0, 0);
+	glNormalPointer(GL_FLOAT, 0, nullptr);
 #else
 	glEnableVertexAttribArray(shaderVertexNormal);
     glVertexAttribPointer(shaderVertexNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 #endif
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVBO);
-	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, nullptr);
 
 #ifdef OPENGL_ES1
 	glDisableClientState(GL_VERTEX_ARRAY);

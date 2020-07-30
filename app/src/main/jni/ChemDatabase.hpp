@@ -34,8 +34,8 @@ private:
 public:
 	static const unsigned int defaultColor = 0xCCCCCC;
 	static const float defaultRadius; // initialization moved to .cpp to avoid use of GNU extension
-	static Color getColor(std::string elem);
-	static float getVdwRadius(std::string elem);
+	static Color getColor(const std::string& elem);
+	static float getVdwRadius(const std::string& elem);
 };
 
 #endif

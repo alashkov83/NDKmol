@@ -19,7 +19,7 @@
 
 #include "Renderable.hpp"
 #include "GLES.hpp"
-#include "math.h"
+#include <cmath>
 
 Renderable::Renderable() {
 	faceVBO = -1; vertexVBO = -1, vertexNormalVBO = -1; colorVBO = -1;
@@ -28,8 +28,8 @@ Renderable::Renderable() {
 	posx = 0; posy = 0; posz = 0;
 	rot = 0; rotx = 1; roty = 1; rotz = 0;
 	vertexColors = false;
-	vertexBuffer = NULL; colorBuffer = NULL; vertexNormalBuffer = NULL;
-	faceBuffer = NULL;
+	vertexBuffer = nullptr; colorBuffer = nullptr; vertexNormalBuffer = nullptr;
+	faceBuffer = nullptr;
 	nFaces = 0;
 	children.clear();
 }
@@ -58,24 +58,24 @@ Renderable::~Renderable() {
     
 	if (vertexBuffer) {
 		delete [] vertexBuffer;
-		vertexBuffer = NULL;
+		vertexBuffer = nullptr;
 	}
 	if (vertexNormalBuffer) {
 		delete [] vertexNormalBuffer;
-		vertexNormalBuffer = NULL;
+		vertexNormalBuffer = nullptr;
 	}
 	if (faceBuffer) {
 		delete [] faceBuffer;
-		faceBuffer = NULL;
+		faceBuffer = nullptr;
 	}
 	if (colorBuffer) {
 		delete [] colorBuffer;
-		colorBuffer = NULL;
+		colorBuffer = nullptr;
 	}
-	for (int i = 0, lim = children.size(); i < lim; i++) {
-		if (children[i]) {
-			delete children[i];
-			children[i] = NULL;			
+	for (auto & i : children) {
+		if (i) {
+			delete i;
+			i = nullptr;
 		}
 	}
 }
@@ -99,8 +99,8 @@ void Renderable::setMatrix() {
 }
 
 void Renderable::drawChildren() {
-	for (int i = 0; i < children.size(); i++) {
-		children[i]->render();
+	for (auto & i : children) {
+		i->render();
 	}
 }
 
@@ -144,7 +144,7 @@ void Renderable::render() {
     setMatrix();
 	drawChildren();
 
-	if (vertexColors && colorBuffer != NULL) {
+	if (vertexColors && colorBuffer != nullptr) {
 #ifdef OPENGL_ES1
 		glEnableClientState(GL_COLOR_ARRAY);
 		glColorPointer(4, GL_FLOAT, 0, colorBuffer);
@@ -173,7 +173,7 @@ void Renderable::render() {
         glVertexAttribPointer(shaderVertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
     	glBindBuffer(GL_ARRAY_BUFFER, 0);
 #endif
-		if (vertexNormalBuffer != NULL) {
+		if (vertexNormalBuffer != nullptr) {
 #ifdef OPENGL_ES1
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glNormalPointer(GL_FLOAT, 0, vertexNormalBuffer);

@@ -50,7 +50,7 @@ void PDBReader::defineCell() {
 }
 
 std::string safeParseString(std::string &s, int from, int len) {
-	std::string ret = "";
+	std::string ret;
 
 	int i = from;
 	int lim = std::min((int)s.length(), from + len);
@@ -88,7 +88,7 @@ void PDBReader::parseOneLine(std::string line) {
 
 		int serial = safeParseInt(line, 6, 5);
 		std::string altLoc = safeParseString(line, 16, 1);
-		if (altLoc != "" && altLoc != "A") return;
+		if (!altLoc.empty() && altLoc != "A") return;
 		Atom *atom = atoms + serial;
 		atom->serial = serial;
 		atom->atom = atomName;
@@ -208,7 +208,7 @@ void PDBReader::parse2ndPass() {
 	}
 }
 
-Protein* PDBReader::parsePDB(std::string filename) {
+Protein* PDBReader::parsePDB(const std::string& filename) {
 	std::ifstream ifs(filename.c_str(), std::ios::in);
 
 	//FIXME: error handling

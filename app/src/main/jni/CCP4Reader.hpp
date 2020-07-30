@@ -27,16 +27,16 @@ class CCP4file {
 private:
 
 public:
-	CCP4file(std::string filename);
+	CCP4file(const std::string& filename);
 	~CCP4file();
 	Mat16 getMatrix(bool scale);
 	bool parseHeader(unsigned char* header);
 	
 	float* map;
 	// These arrays are 1-indexed!!
-	int NCRS[4], NSTART[4], NXYZ[4], MAPCRS[4], ISPG, NSYMBT;
-	float a, b, c, alpha, beta, gamma, AMIN, AMAX, AMEAN, ARMS;
-	float basis[4][3];
+	int NCRS[4]{}, NSTART[4]{}, NXYZ[4]{}, MAPCRS[4]{}, ISPG{}, NSYMBT{};
+	float a{}, b{}, c{}, alpha{}, beta{}, gamma{}, AMIN{}, AMAX{}, AMEAN{}, ARMS{};
+	float basis[4][3]{};
 };
 
 #endif

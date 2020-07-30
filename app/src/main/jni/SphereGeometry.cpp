@@ -21,9 +21,9 @@
 #include <cmath>
 #include <cstddef>
 
-float *SphereGeometry::vertexBuffer = NULL;
-float *SphereGeometry::vertexNormalBuffer = NULL;
-unsigned short *SphereGeometry::faceBuffer = NULL;
+float *SphereGeometry::vertexBuffer = nullptr;
+float *SphereGeometry::vertexNormalBuffer = nullptr;
+unsigned short *SphereGeometry::faceBuffer = nullptr;
 int SphereGeometry::nVertices, SphereGeometry::nFaces;
 
 float *SphereGeometry::getVertexBuffer() {
@@ -59,7 +59,7 @@ void SphereGeometry::prepare(int div1, int div2) {
 	int offset = 0;
 	for (int i = 0; i <= div1; i++) { // z
 		float z = 1 - 2.0f * i / div1;
-		float r = (float)std::sqrt(1 - z * z);
+		auto r = (float)std::sqrt(1 - z * z);
 		for (int j = 0; j <= div2; j++) {
 			float x = r * (float)std::cos(j * 2 * M_PI / div2);
 			float y = r * (float)std::sin(j * 2 * M_PI / div2);

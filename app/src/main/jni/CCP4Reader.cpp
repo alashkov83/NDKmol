@@ -23,7 +23,7 @@
 #include <cmath>
 #include <zlib.h>
 
-CCP4file::CCP4file(std::string filename) : map(NULL) {
+CCP4file::CCP4file(const std::string& filename) : map(nullptr) {
 	FILE *ccp4in = std::fopen(filename.c_str(), "rb");
 	if (!ccp4in) return;
 	
@@ -54,7 +54,7 @@ bool CCP4file::parseHeader(unsigned char* buf) {
 	if (buf[52 * 4] != 'M' || buf[52 * 4 + 1] != 'A' || buf[52 * 4 + 2] != 'P') return false;
 	
 	int *header_int = (int*)buf;
-	float *header_float = (float*)buf;
+	auto *header_float = (float*)buf;
 	NCRS[1] = header_int[0];
 	NCRS[2] = header_int[1];
 	NCRS[3] = header_int[2];

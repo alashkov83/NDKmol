@@ -19,14 +19,6 @@
 
 package jp.sfjp.webglmol.NDKmol;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -35,15 +27,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FileBrowser extends Activity {
 
@@ -51,49 +51,49 @@ public class FileBrowser extends Activity {
 	private List<Map<String, String>> dataList;
 	private FileBrowser self;
 	private String currentPath, selectedFile;
-	private SimpleAdapter adapter;
 
 
 	private List<Map<String,String>> getFileList(String path) {
-		List<Map<String,String>> ret = new ArrayList<Map<String,String>>();
+		List<Map<String,String>> ret = new ArrayList<>();
 
 		File dir = new File(path);
 		File[] files = dir.listFiles();
 		Log.d("FileBrowser", dir.toURI().toString());
 
-		for (int i = 0, lim = files.length; i < lim; i++) {
-			String	name = "", title = ""; 
+		assert files != null;
+		for (File value : files) {
+			String name;
+			StringBuilder title = new StringBuilder();
 			try {
-				HashMap<String, String> records = new HashMap<String, String>();
-				File file = files[i];
-				name = file.getName();
+				HashMap<String, String> records = new HashMap<>();
+				name = value.getName();
 				String upperCased = name.toUpperCase();
 				if (upperCased.endsWith("PDB")) {
-					FileInputStream input = new FileInputStream(file);
+					FileInputStream input = new FileInputStream(value);
 					InputStreamReader reader = new InputStreamReader(input);
 					int headerLength = 300;
-					char buffer[] = new char[headerLength];
+					char[] buffer = new char[headerLength];
 					reader.read(buffer, 0, headerLength);
-					String header[] = new String(buffer).split("\n");
-					for (int j = 0; j < header.length; j++) {
-						if (header[j].startsWith("TITLE") && header[j].length() > 11) {
-							title += header[j].substring(10).replace("  ", "");
+					String[] header = new String(buffer).split("\n");
+					for (String s : header) {
+						if (s.startsWith("TITLE") && s.length() > 11) {
+							title.append(s.substring(10).replace("  ", ""));
 						}
 					}
 					reader.close();
 				} else if (upperCased.endsWith("SDF") || upperCased.endsWith("MOL")) {
-					title = "a SDF/MOL file";
+					title = new StringBuilder("a SDF/MOL file");
 				} else if (upperCased.endsWith("CCP4") || upperCased.endsWith("CCP4.GZ")) {
-					title = "an electron density file (CCP4/MRC format)";
+					title = new StringBuilder("an electron density file (CCP4/MRC format)");
 				} else {
 					continue;
 				}
 
 				records.put("fileName", name);
-				records.put("structureTitle", title);
+				records.put("structureTitle", title.toString());
 				ret.add(records);
 			} catch (Exception e) {
-
+				e.getStackTrace();
 			}
 		}
 		return ret;
@@ -101,12 +101,12 @@ public class FileBrowser extends Activity {
 
 	private void setFileList() {
 		dataList = getFileList(currentPath);
-		adapter = new SimpleAdapter(
+		SimpleAdapter adapter = new SimpleAdapter(
 				self,
 				dataList,
 				android.R.layout.simple_list_item_2,
-				new String[] { "fileName", "structureTitle"},
-				new int[] { android.R.id.text1, android.R.id.text2 }
+				new String[]{"fileName", "structureTitle"},
+				new int[]{android.R.id.text1, android.R.id.text2}
 		);
 		listView.setAdapter(adapter);
 	}

@@ -40,13 +40,13 @@ public:
 	bool compactMode;
 	void defineCell();
 	PDBReader();
-	Protein* parsePDB(std::string filename);
+	Protein* parsePDB(const std::string& filename);
 
 private:
 	Protein *protein;
 	void parseOneLine(std::string str);
 	void parse2ndPass();
-	int currentBiomol;
+	int currentBiomol{};
 };
 
 #endif

@@ -21,9 +21,9 @@
 #include <cmath>
 #include <cstddef>
 
-float *CylinderGeometry::vertexBuffer = NULL;
-float *CylinderGeometry::vertexNormalBuffer = NULL;
-unsigned short *CylinderGeometry::faceBuffer = NULL;
+float *CylinderGeometry::vertexBuffer = nullptr;
+float *CylinderGeometry::vertexNormalBuffer = nullptr;
+unsigned short *CylinderGeometry::faceBuffer = nullptr;
 
 int CylinderGeometry::nVertices, CylinderGeometry::nFaces;
 
@@ -57,8 +57,8 @@ void CylinderGeometry::prepare(int div) {
 	vertexBuffer = new float[nVertices * 3];
 	vertexNormalBuffer = new float[nVertices * 3];
 
-	float cos = (float)std::cos(2 * M_PI / div);
-	float sin = (float)std::sin(2 * M_PI / div);
+	auto cos = (float)std::cos(2 * M_PI / div);
+	auto sin = (float)std::sin(2 * M_PI / div);
 
 	vertexBuffer[0] = 1; vertexBuffer[1] = 0;vertexBuffer[2] = 0;
 	vertexBuffer[3] = 1; vertexBuffer[4] = 0;vertexBuffer[5] = 1;

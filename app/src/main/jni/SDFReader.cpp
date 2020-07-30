@@ -30,7 +30,7 @@ SDFReader::SDFReader() {
 	atoms = protein->atoms;
 }
 
-Protein* SDFReader::parseSDF(std::string filename) {
+Protein* SDFReader::parseSDF(const std::string& filename) {
 	std::ifstream ifs(filename.c_str(), std::ios::in);
 
 	std::string line;
@@ -42,14 +42,14 @@ Protein* SDFReader::parseSDF(std::string filename) {
 	ifs.close();
 
 	protein->sdffile = true;
-	if (lines.size() < 4) return NULL;
+	if (lines.size() < 4) return nullptr;
 
 	int atomCount = safeParseInt(lines[3], 0, 3);
-	if (atomCount <= 0) return NULL;
+	if (atomCount <= 0) return nullptr;
 
 	int bondCount = safeParseInt(lines[3], 3, 3);
 	int offset = 4;
-	if (lines.size() < 4 + atomCount + bondCount) return NULL;
+	if (lines.size() < 4 + atomCount + bondCount) return nullptr;
 
 	for (int i = 1; i <= atomCount; i++) {
 		line = lines[offset++];

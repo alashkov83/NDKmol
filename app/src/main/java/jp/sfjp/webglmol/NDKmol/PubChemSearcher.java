@@ -19,6 +19,29 @@
 
 package jp.sfjp.webglmol.NDKmol;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,49 +55,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import java.util.Objects;
 
 public class PubChemSearcher extends Activity {
 
 	private ListView listView = null;
-	private Button searchButton;
 	private EditText keyword;
-	private String pubchemSearchURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=#MAXRESULT#&term=#KEYWORD#";
-	private String pdbchemDetailURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=#IDs#";
-	private String pubchemDownloadURI = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/#ID#/record/SDF/?record_type=3d";
+	private final String pubchemSearchURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=#MAXRESULT#&term=#KEYWORD#";
+	private final String pdbchemDetailURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=#IDs#";
+	private final String pubchemDownloadURI = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/#ID#/record/SDF/?record_type=3d";
     // when changed, edit NDKmolActivity.readURI accordingly!
 
 	private List<Map<String, String>> dataList;
-	private int MAXRESULT = 30, MAXSYNONYMS = 5;
+	private final int MAXRESULT = 30, MAXSYNONYMS = 5;
 	private PubChemSearcher self;
 	private View detailsView;
 	private Proxy proxy;
 
 	private ArrayList<String> queryPubchemforIDs(String keyword) {
-		ArrayList<String> ids = new ArrayList<String>();
-		StringBuffer sb = new StringBuffer();
+		ArrayList<String> ids = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
 
 		try {
 			keyword = URLEncoder.encode(keyword, "UTF-8");
@@ -111,16 +111,16 @@ public class PubChemSearcher extends Activity {
 	}
 
 	private List<Map<String,String>> queryPubchemforDetails(ArrayList<String> ids) {
-		List<Map<String,String>> ret = new ArrayList<Map<String,String>>();
-		String joined = "";
-		StringBuffer sb = new StringBuffer();
+		List<Map<String,String>> ret = new ArrayList<>();
+		StringBuilder joined = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
 		int lim = ids.size();
 		if (lim > MAXRESULT) lim = MAXRESULT;
-		for (int i = 0; i < lim; i++) joined += ids.get(i) + ","; // final ',' doesn't harm
+		for (int i = 0; i < lim; i++) joined.append(ids.get(i)).append(","); // final ',' doesn't harm
 
 		try {
-			URL url = new URL(pdbchemDetailURI.replaceFirst("#IDs#", joined));
+			URL url = new URL(pdbchemDetailURI.replaceFirst("#IDs#", joined.toString()));
 			HttpURLConnection conn;
 			if (proxy != null) {
 				conn = (HttpURLConnection) url.openConnection(proxy);
@@ -140,30 +140,29 @@ public class PubChemSearcher extends Activity {
 		}
 
 		String[] entries = sb.toString().split("</DocSum>");
-		for (int i = 0, ilim = entries.length; i < ilim; i++) {
-			String entry = entries[i];
-			HashMap<String, String> records = new HashMap<String, String>();
-			
+		for (String entry : entries) {
+			HashMap<String, String> records = new HashMap<>();
+
 			int idL = entry.indexOf("<Id>");
 			int idR = entry.indexOf("</Id>");
 			if (idL < 0 || idR < 0) continue;
 			idL += 4;
 			String id = entry.substring(idL, idR);
-			String synonyms = "";
-			
+			StringBuilder synonyms = new StringBuilder();
+
 			int pos = entry.indexOf("<Item Name=\"SynonymList\" Type=\"List\">");
 			int lindex, rindex, cnt = 0;
 			while ((lindex = entry.indexOf("<Item Name=\"string\" Type=\"String\">", pos)) > 0) {
-				 lindex += 34;
-				 rindex = entry.indexOf("</Item>", lindex);
-				 synonyms += entry.substring(lindex, rindex) + " ";
-			     pos = rindex + 1;
-			     int peek = entry.indexOf("</Item>", rindex + 1);
-			     if (peek - rindex < 30) break;
-			     if (cnt++ > MAXSYNONYMS) break;
+				lindex += 34;
+				rindex = entry.indexOf("</Item>", lindex);
+				synonyms.append(entry.substring(lindex, rindex)).append(" ");
+				pos = rindex + 1;
+				int peek = entry.indexOf("</Item>", rindex + 1);
+				if (peek - rindex < 30) break;
+				if (cnt++ > MAXSYNONYMS) break;
 			}
 			records.put("structureId", id);
-			records.put("structureTitle", synonyms);
+			records.put("structureTitle", synonyms.toString());
 			ret.add(records);
 		}
 		return ret;
@@ -179,7 +178,7 @@ public class PubChemSearcher extends Activity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(self);
 		if (prefs.getBoolean(self.getString(R.string.useProxy), false)) {
 			String proxyAddress = prefs.getString(self.getString(R.string.proxyHost), "");
-			int proxyPort = Integer.parseInt(prefs.getString(self.getString(R.string.proxyPort), "8080"));
+			int proxyPort = Integer.parseInt(Objects.requireNonNull(prefs.getString(self.getString(R.string.proxyPort), "8080")));
 			
 			SocketAddress addr = new InetSocketAddress(proxyAddress, proxyPort);
 			proxy = new Proxy(Proxy.Type.HTTP, addr);
@@ -190,7 +189,7 @@ public class PubChemSearcher extends Activity {
 
 		listView = (ListView)findViewById(R.id.searchResults);
 		dataList = null;
-		searchButton = (Button)findViewById(R.id.searchButton);
+		Button searchButton = (Button) findViewById(R.id.searchButton);
 		keyword = (EditText)findViewById(R.id.keyword);
 		searchButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

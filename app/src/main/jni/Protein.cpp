@@ -21,7 +21,7 @@
 
 Protein::Protein() {
 	sdffile = false;
-	for (int i = 0; i < 100001; i++) {
-		atoms[i].valid = false;
+	for (auto & atom : atoms) {
+		atom.valid = false;
 	}
 }

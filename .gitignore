@@ -12,3 +12,17 @@
 /captures
 .externalNativeBuild
 .cxx
+Будет удалено .idea/codeStyles/
+Будет удалено .idea/gradle.xml
+Будет удалено .idea/jarRepositories.xml
+Будет удалено .idea/misc.xml
+Будет удалено .idea/runConfigurations.xml
+Будет удалено .idea/vcs.xml
+Будет удалено app/libs/
+Будет удалено app/src/androidTest/
+Будет удалено app/src/main/libs/
+Будет удалено app/src/main/obj/
+Будет удалено app/src/main/res/drawable-v24/
+Будет удалено app/src/main/res/drawable/
+Будет удалено app/src/test/
+Будет удалено gradle/

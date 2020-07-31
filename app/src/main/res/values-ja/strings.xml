@@ -50,9 +50,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/\n
 \n
     </string>
-    <string name="tooBigPDB">ファイルが大きすぎて開けません。NDKmol (マーケットまたはWebサイトから入手可能)を使用してください。</string>
-    <string name="tooBigSDF">ファイルが大きすぎて開けません。</string>
-    <string name="wrongPDBID">PDB ID が間違っています。</string>
     <string name="unknownFileType">非対応のファイル形式です。 .pdb / .sdf / .mol ファイルを選択してください。</string>
     <string name="Zoom">拡大縮小</string>
     <string name="Rotate">回転</string>
@@ -85,7 +82,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="DownloadPDB">検索してダウンロード</string>
     <string name="Preferences">設定</string>
     <string name="About">このソフトについて</string>
-    <string name="goToWebSite">Website を開く</string>
     <string name="searchButton">検索</string>
     <string name="PDBID">ID:</string>
     <string name="structureTitle">名称:</string>
@@ -114,6 +110,4 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="download">ダウンロード</string>
     <string name="delete">削除</string>
     <string name="cancel">中止</string>
-    <string name="strucureDetails">構造情報</string>
-    <string name="cactusExplanation">NCI/CADD CACTUS chemical identifer resolver 経由で構造情報を取得します。例えば、「xenon hexafluoride」で検索してみましょう。</string>
 </resources>

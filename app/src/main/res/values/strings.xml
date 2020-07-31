@@ -52,9 +52,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/\n
 \n
     </string>
-    <string name="tooBigPDB">This file is too big. Please consider using NDKmol which is available at Android Market or my project website.</string>
-    <string name="tooBigSDF">This file is too big to open.</string>
-    <string name="wrongPDBID">PDB id is wrong.</string>
     <string name="unknownFileType">Unknown file type. Only .pdb / .sdf / .mol files are supported.</string>
     <string name="Zoom">Zoom</string>
     <string name="Rotate">Rotate</string>
@@ -87,7 +84,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="DownloadPDB">Search and Download</string>
     <string name="Preferences">Preferences</string>
     <string name="About">About</string>
-    <string name="goToWebSite">Visit Website</string>
     <string name="searchButton">Search</string>
     <string name="PDBID">ID:</string>
     <string name="structureTitle">Title:</string>
@@ -116,6 +112,4 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="download">Download</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="strucureDetails">Structure Details</string>
-    <string name="cactusExplanation" translatable="false">You can search 3D structure using NCI/CADD CACTUS chemical identifer resolver.\nFor example, try searching \'xenon hexafluoride\'.</string>
 </resources>

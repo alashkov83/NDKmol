@@ -32,7 +32,7 @@ MatRenderable::~MatRenderable() = default;
 
 // we need to transpose the matrix
 void MatRenderable::addMatrix(Mat16 &mat) {
-	Mat16 tmp;
+    auto tmp = Mat16();
     float *matrix = tmp.m;
     
 	matrix[0] = mat.m[0];

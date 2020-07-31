@@ -65,11 +65,11 @@ std::string safeParseString(std::string &s, int from, int len) {
 }
 
 int safeParseInt(std::string &s, int from, int len) {
-	return atoi(safeParseString(s, from, len).c_str());
+    return std::strtol(safeParseString(s, from, len).c_str(), nullptr, 10);
 }
 
 float safeParseFloat(std::string &s, int from, int len) {
-	return atof(safeParseString(s, from, len).c_str());
+    return std::strtof(safeParseString(s, from, len).c_str(), nullptr);
 }
 
 void PDBReader::parseOneLine(std::string line) {

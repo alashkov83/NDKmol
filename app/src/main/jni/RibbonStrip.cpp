@@ -123,26 +123,30 @@ void RibbonStrip::initMesh(const float *points1, const float *points2, std::vect
 		if (i < size - 1) {
 			ax += points1[vertexOffset + 3] - points1[vertexOffset];
 			ay += points1[vertexOffset + 4] - points1[vertexOffset + 1];
-			az += points1[vertexOffset + 5] - points1[vertexOffset + 2];
-		}
-		float bx = points2[vertexOffset] - points1[vertexOffset];
-		float by = points2[vertexOffset + 1] - points1[vertexOffset + 1];
-		float bz = points2[vertexOffset + 2] - points1[vertexOffset + 2];
-		
-		float nx = ay * bz - az * by;
-		float ny = az * bx - ax * bz;
-		float nz = ax * by - ay * bx;
-		
-		float norm = (float)std::sqrt(nx * nx + ny * ny + nz * nz);
-		nx /= norm; ny /= norm; nz /= norm; // TODO: Is this correct? Invert??
-		
-		norm = (float)std::sqrt(bx * bx + by * by + bz * bz);
-		bx /= norm; by /= norm; bz /= norm;
-		
-		// 0 2 - top, 4 6 - bottom, 1 5 - side, 3 7 - side
-		*(vnb++) = nx; // 0 top
-		*(vnb++) = ny;
-		*(vnb++) = nz;
+            az += points1[vertexOffset + 5] - points1[vertexOffset + 2];
+        }
+        float bx = points2[vertexOffset] - points1[vertexOffset];
+        float by = points2[vertexOffset + 1] - points1[vertexOffset + 1];
+        float bz = points2[vertexOffset + 2] - points1[vertexOffset + 2];
+
+        float nx = ay * bz - az * by;
+        float ny = az * bx - ax * bz;
+        float nz = ax * by - ay * bx;
+
+        auto norm = (float) std::sqrt(nx * nx + ny * ny + nz * nz);
+        nx /= norm;
+        ny /= norm;
+        nz /= norm; // TODO: Is this correct? Invert??
+
+        norm = (float) std::sqrt(bx * bx + by * by + bz * bz);
+        bx /= norm;
+        by /= norm;
+        bz /= norm;
+
+        // 0 2 - top, 4 6 - bottom, 1 5 - side, 3 7 - side
+        *(vnb++) = nx; // 0 top
+        *(vnb++) = ny;
+        *(vnb++) = nz;
 
 		*(vnb++) = bx; // 1 side1
 		*(vnb++) = by;

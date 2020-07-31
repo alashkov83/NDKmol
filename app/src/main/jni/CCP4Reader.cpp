@@ -30,12 +30,12 @@ CCP4file::CCP4file(const std::string& filename) : map(nullptr) {
 	unsigned char buf[300];
 	std::fread(buf, 4, 56, ccp4in);
 	if (parseHeader(buf)) {
-		std::fseek(ccp4in, 256 * 4 + NSYMBT, SEEK_SET);
-		map = (float*)malloc(NCRS[1] * NCRS[2] * NCRS[3] * sizeof(float));
-		if (map) std::fread(map, sizeof(float), NCRS[1] * NCRS[2] * NCRS[3], ccp4in);
-		fclose(ccp4in);
-		return;
-	} else if (buf[0] == 0x1f && buf[1] == 0x8b) { // gzipped map
+        std::fseek(ccp4in, 256 * 4 + NSYMBT, SEEK_SET);
+        map = (float *) malloc(NCRS[1] * NCRS[2] * NCRS[3] * sizeof(float));
+        if (map) std::fread(map, sizeof(float), (size_t) (NCRS[1] * NCRS[2] * NCRS[3]), ccp4in);
+        fclose(ccp4in);
+        return;
+    } else if (buf[0] == 0x1f && buf[1] == 0x8b) { // gzipped map
 		fclose(ccp4in);
 		
 		gzFile ccp4gz = gzopen(filename.c_str(), "rb");

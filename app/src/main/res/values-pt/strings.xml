@@ -52,9 +52,6 @@ Você deve ter recebido uma cópia da GNU Lesser General Public License
 junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
 \n
     </string>
-    <string name="tooBigPDB">Este arquivo é muito grande. Por favor considere utilizar o NDKmol que está disponível na Play Store ou no website do meu projeto.</string>
-    <string name="tooBigSDF">Este arquivo é muito grande para abrir.</string>
-    <string name="wrongPDBID">O id do PDB está errado.</string>
     <string name="unknownFileType">Tipo desconhecido de arquivo. Apenas arquivos .pdb / .sdf / .mol são suportados.</string>
     <string name="Zoom">Zoom</string>
     <string name="Rotate">Rotacionar</string>
@@ -87,7 +84,6 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="DownloadPDB">Procurar e Baixar</string>
     <string name="Preferences">Preferências</string>
     <string name="About">Sobre</string>
-    <string name="goToWebSite">Visitar Website</string>
     <string name="searchButton">Pesquisar</string>
     <string name="PDBID">ID:</string>
     <string name="structureTitle">Título:</string>
@@ -116,5 +112,4 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="download">Baixar</string>
     <string name="delete">Excluir</string>
     <string name="cancel">Cancelar</string>
-    <string name="strucureDetails">Detalhes da Estrutura</string>
 </resources>

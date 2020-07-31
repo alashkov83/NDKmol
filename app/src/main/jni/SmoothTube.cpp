@@ -89,25 +89,25 @@ SmoothTube::SmoothTube(std::vector<Vector3> &_points, std::vector<Color> &colors
 
 	voffset = 0;
 	for (int i = 0, lim = nDividedPoints - 1; i < lim; i++) {
-		int reg = 0;
-		int vo1 = voffset * 3, vo2 = vo1 + circleDiv * 3;
-		auto r1 = (float) Vector3::norm(vertices[vo1] - vertices[vo2],
-				vertices[vo1 + 1] - vertices[vo2 + 1],
-				vertices[vo1 + 2] - vertices[vo2 + 2]);
-		auto r2 = (float) Vector3::norm(vertices[vo1] - vertices[vo2 + 3],
-				vertices[vo1 + 1] - vertices[vo2 + 4],
-				vertices[vo1 + 2] - vertices[vo2 + 5]);
-		if (r1 > r2) {r1 = r2; reg = 1;}
-		for (int j = 0; j < circleDiv; j++) {
-			faces[foffset++] = (short) (voffset + j);
-			faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
-			faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
-			faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
-			faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
-			faces[foffset++] = (short) (voffset + (j + reg + 1) % circleDiv + circleDiv);
-		}
-		voffset += circleDiv;
-	}
+        int reg = 0;
+        int vo1 = voffset * 3, vo2 = vo1 + circleDiv * 3;
+        auto r1 = (float) Vector3::norm(vertices[vo1] - vertices[vo2],
+                                        vertices[vo1 + 1] - vertices[vo2 + 1],
+                                        vertices[vo1 + 2] - vertices[vo2 + 2]);
+        auto r2 = (float) Vector3::norm(vertices[vo1] - vertices[vo2 + 3],
+                                        vertices[vo1 + 1] - vertices[vo2 + 4],
+                                        vertices[vo1 + 2] - vertices[vo2 + 5]);
+        if (r1 > r2) { reg = 1; }
+        for (int j = 0; j < circleDiv; j++) {
+            faces[foffset++] = (short) (voffset + j);
+            faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
+            faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
+            faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
+            faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
+            faces[foffset++] = (short) (voffset + (j + reg + 1) % circleDiv + circleDiv);
+        }
+        voffset += circleDiv;
+    }
 
 	delete [] points;
 

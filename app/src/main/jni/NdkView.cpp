@@ -84,27 +84,49 @@ void drawCartoon(Renderable &scene, std::vector<int> &atomlist, int div, bool do
 void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div, bool fill, bool doNotSmoothen, float thickness);
 void colorChainbow(std::vector<int> &atomlist);
 void colorByBFactor(std::vector<int> &atomlist);
+
 void colorByPolarity(std::vector<int> &atomlist, Color polar, Color nonPolar);
+
 void colorByResidue(std::vector<int> &atomlist, std::map<std::string, Color> colorMap);
-void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth, const std::string& atomName);
-void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std::string& atomName);
+
+void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth,
+                        const std::string &atomName);
+
+void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std::string &atomName);
+
 bool isIdentity(Mat16 mat);
+
 void drawBondsAsStick(Renderable &scene, std::vector<int> &atomlist, float bondR, float atomR);
+
 void drawBondsAsLine(Renderable &scene, std::vector<int> &atomlist, float lineWidth);
+
 void drawAtomsAsVdWSphere(Renderable &scene, std::vector<int> &atomlist);
+
 void drawAtomsAsStar(Renderable &scene, std::vector<int> &atomlist, float delta);
-void drawSymmetryMates(Renderable &scene, Renderable *asu, std::map<int, Mat16> biomtMatrices);
-void drawSymmetryMatesWithTranslation(Renderable &scene, Renderable *asu, std::map<int, Mat16> matrices);
+
+void
+drawSymmetryMates(Renderable &scene, Renderable *asu, const std::map<int, Mat16> &biomtMatrices);
+
+void drawSymmetryMatesWithTranslation(Renderable &scene, Renderable *asu,
+                                      const std::map<int, Mat16> &matrices);
+
 void drawUnitcell(Renderable &scene, float width);
+
 void drawNucleicAcidAsLine(Renderable &scene, std::vector<int> &atomlist);
-void drawNucleicAcidCartoon(Renderable &scene, std::vector<int> &atomlist, int div, float thickness);
-void drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div, bool fill, float thickness);
+
+void
+drawNucleicAcidCartoon(Renderable &scene, std::vector<int> &atomlist, int div, float thickness);
+
+void
+drawNucleicAcidStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div, bool fill,
+                      float thickness);
+
 void drawNucleicAcidLadder(Renderable &scene, std::vector<int> &atomlist);
 
 #ifdef __ANDROID__
 // onSurfaceChanged
 extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLResize
-(JNIEnv *env, jclass clasz, jint width, jint height) {
+        (JNIEnv *env, jclass clasz, jint width, jint height) {
 	nativeGLResize(width, height);
 }
 
@@ -445,7 +467,7 @@ void buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode
 	} else { // No SYMOP, No BIOMT defined, or NMR structure
 		scene->children.push_back(asu);
 	}
-	
+
 	if (true) { // TODO: MTZ test.
 		if (mapfile) {
 			ms = new MarchingSquares(mapfile);
@@ -621,21 +643,21 @@ std::vector<int> getSideChain(std::vector<int> &atomlist) {
 }
 
 std::vector<int> getChain(std::vector<int> &atomlist, std::string &chain) {
-	std::vector<int> ret;
-	std::set<std::string> chains;
+    std::vector<int> ret;
+    std::set<std::string> chains;
 
-	// FIXME: This assumes chain name is 'char'. It is valid for PDB but
-	//  then we should have used 'char' for atom->chain.
-	for (int i = 0, lim = chain.length(); i < lim; i++)
-		chains.insert(chain.substr(i, 1));
+    // FIXME: This assumes chain name is 'char'. It is valid for PDB but
+    //  then we should have used 'char' for atom->chain.
+    for (unsigned int i = 0, lim = chain.length(); i < lim; i++)
+        chains.insert(chain.substr(i, 1));
 
-	for (int i : atomlist) {
-		Atom *atom = atoms + i;
-		if (!atom->valid) continue;
+    for (int i : atomlist) {
+        Atom *atom = atoms + i;
+        if (!atom->valid) continue;
 
-		if (chains.find(atom->chain) != chains.end()) ret.push_back(atom->serial);
-	}
-	return ret;
+        if (chains.find(atom->chain) != chains.end()) ret.push_back(atom->serial);
+    }
+    return ret;
 }
 
 void colorByAtom(std::vector<int> &atomlist, std::map<std::string, unsigned int> &colors) {
@@ -739,15 +761,19 @@ void colorByBFactor(std::vector<int> &atomlist) {
 }
 
 void colorByPolarity(std::vector<int> &atomlist, Color polar, Color nonPolar) {
-	std::string polarResidues[] = {"ARG", "HIS", "LYS", "ASP", "GLU", "SER", "THR", "ASN", "GLN", "CYS"}; // 10
-	std::string nonPolarResidues[] = {"GLY", "PRO", "ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TYR", "TRP"}; // 10
 
-	std::map<std::string, Color> colorMap;
-	for (int i = 0; i < 10; i++) {
-		colorMap[polarResidues[i]] = polar;
-		colorMap[nonPolarResidues[i]] = nonPolar;
-	}
-	colorByResidue(atomlist, colorMap);
+    std::vector<std::string> polarResidues = {"ARG", "HIS", "LYS", "ASP", "GLU", "SER", "THR",
+                                              "ASN", "GLN", "CYS"};
+    std::vector<std::string> nonPolarResidues = {"GLY", "PRO", "ALA", "VAL", "LEU", "ILE", "MET",
+                                                 "PHE", "TYR", "TRP"};
+    std::map<std::string, Color> colorMap;
+    for (const auto &res: polarResidues) {
+        colorMap[res] = polar;
+    }
+    for (const auto &res: nonPolarResidues) {
+        colorMap[res] = nonPolar;
+    }
+    colorByResidue(atomlist, colorMap);
 }
 
 void drawAtomsAsStar(Renderable &scene, std::vector<int> &atomlist, float delta) {
@@ -1115,14 +1141,17 @@ void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div,
 		if ((atom->atom == "O" || atom->atom == "CA") && !atom->hetflag) {
 			if (atom->atom == "CA") {
 				if (currentChain != atom->chain || currentResi + 1 != atom->resi) {
-					if (fill) scene.children.push_back(new RibbonStrip(points[0], points[1], smoothen, colors, thickness));
-					for (int j = 0; thickness < 0 && j < num; j++)
-						scene.children.push_back(new SmoothCurve(points[j], smoothen, colors, 1.0f, div));
-					for (int k = 0; k < num; k++) points[k].clear();
-					colors.clear();
-					smoothen.clear();
-					prevCO.x = -9999; ss = "";
-				}
+                    if (fill)
+                        scene.children.push_back(
+                                new RibbonStrip(points[0], points[1], smoothen, colors, thickness));
+                    for (int j = 0; thickness < 0 && j < num; j++)
+                        scene.children.push_back(
+                                new SmoothCurve(points[j], smoothen, colors, 1.0f, div));
+                    for (int k = 0; k < num; k++) points[k].clear();
+                    colors.clear();
+                    smoothen.clear();
+                    prevCO.x = -9999;
+                }
 				currentCA.x = atom->x; currentCA.y = atom->y; currentCA.z = atom->z;
 				currentChain = atom->chain;
 				currentResi = atom->resi;
@@ -1138,10 +1167,11 @@ void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div,
 				}
 				prevCO = O;
 				for (int j = 0; j < num; j++) {
-					float delta = -1 + 2.0f / (num - 1) * j;
-					points[j].emplace_back(currentCA.x + prevCO.x * delta,
-												currentCA.y + prevCO.y * delta, currentCA.z + prevCO.z * delta);
-				}
+                    float delta = -1 + 2.0f / (float) (num - 1) * j;
+                    points[j].emplace_back(currentCA.x + prevCO.x * delta,
+                                           currentCA.y + prevCO.y * delta,
+                                           currentCA.z + prevCO.z * delta);
+                }
 				smoothen.push_back(!doNotSmoothen && ss == "s");
 			}
 		}
@@ -1248,32 +1278,34 @@ void drawAtomsAsVdWSphere(Renderable &scene, std::vector<int> &atomlist) {
 	//	scene.children.push_back(sphere);
 }
 
-void drawSymmetryMates(Renderable &scene, Renderable *asu, std::map<int, Mat16> biomtMatrices) {
-	if (biomtMatrices.empty()) return;
+void
+drawSymmetryMates(Renderable &scene, Renderable *asu, const std::map<int, Mat16> &biomtMatrices) {
+    if (biomtMatrices.empty()) return;
 
-	auto *symmetryMate = new MatRenderable();
-	symmetryMate->children.push_back(asu);
-	scene.children.push_back(symmetryMate);
-	
-	for (auto & biomtMatrice : biomtMatrices) {
-		Mat16 mat = biomtMatrice.second;
+    auto *symmetryMate = new MatRenderable();
+    symmetryMate->children.push_back(asu);
+    scene.children.push_back(symmetryMate);
+
+    for (auto &biomtMatrice : biomtMatrices) {
+        Mat16 mat = biomtMatrice.second;
 //		if (isIdentity(mat)) continue;
 		
 		symmetryMate->addMatrix(mat);
 	}
 }
 
-void drawSymmetryMatesWithTranslation(Renderable &scene, Renderable *asu, std::map<int, Mat16> matrices) {
-	auto *symmetryMate = new MatRenderable();
-	symmetryMate->children.push_back(asu);
-	scene.children.push_back(symmetryMate);
+void drawSymmetryMatesWithTranslation(Renderable &scene, Renderable *asu,
+                                      const std::map<int, Mat16> &matrices) {
+    auto *symmetryMate = new MatRenderable();
+    symmetryMate->children.push_back(asu);
+    scene.children.push_back(symmetryMate);
 
-	for (auto & matrice : matrices) {
-		Mat16 mat = matrice.second;
+    for (auto &matrice : matrices) {
+        Mat16 mat = matrice.second;
 
-		for (int a = -1; a <= 0; a++) {
-			for (int b = -1; b <= 0; b++) {
-				for (int c = -1; c <= 0; c++) {
+        for (int a = -1; a <= 0; a++) {
+            for (int b = -1; b <= 0; b++) {
+                for (int c = -1; c <= 0; c++) {
 					Mat16 translated = mat;
 					translated.m[3] += protein->ax * a + protein->bx * b + protein->cx * c;
 					translated.m[7] += protein->ay * a + protein->by * b + protein->cy * c;

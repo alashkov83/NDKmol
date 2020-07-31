@@ -2,36 +2,70 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 <item android:title="@string/TouchMode"><menu>
-   <group android:checkableBehavior="single" android:id="@+id/touchMode">
-	<item android:id="@+id/zoom" android:icon="@android:drawable/ic_menu_zoom" android:title="@string/Zoom"/>
-	<item android:id="@+id/rotate" android:icon="@android:drawable/ic_menu_rotate" android:title="@string/Rotate"/>
-	<item  android:id="@+id/move" android:title="@string/Move" android:icon="@android:drawable/ic_menu_mapmode"/>
-	<item  android:id="@+id/slab" android:title="@string/Slab"/>
-	</group>
+   <group android:checkableBehavior="single">
+       <item
+           android:id="@+id/zoom"
+           android:icon="@android:drawable/ic_menu_zoom"
+           android:title="@string/Zoom" />
+       <item
+           android:id="@+id/rotate"
+           android:icon="@android:drawable/ic_menu_rotate"
+           android:title="@string/Rotate" />
+       <item
+           android:id="@+id/move"
+           android:title="@string/Move"
+           android:icon="@android:drawable/ic_menu_mapmode" />
+       <item
+           android:id="@+id/slab"
+           android:title="@string/Slab" />
+   </group>
 	<item  android:id="@+id/resetView" android:title="@string/resetView"/>
 </menu></item>
     
 <item android:title="@string/Polymer">
-  <menu><group android:checkableBehavior="single" android:id="@+id/ProteinMode">
-    <item android:id="@+id/CA_trace" android:title="@string/AsMainchainTrace"/>
-    <item android:id="@+id/Ribbon" android:title="@string/AsRibbon"/>
-    <item android:id="@+id/ThickRibbon" android:title="@string/AsThickRibbon"/>
-    <item android:id="@+id/Strand" android:title="@string/AsStrand"/>
-    <item android:id="@+id/Tube" android:title="@string/AsBFactorTube"/>
-    <item android:id="@+id/Bonds" android:title="@string/AsBonds"/>
-    <item android:id="@+id/MainchainNone" android:title="@string/None"/>
-  </group>
-  <group android:checkableBehavior="all" >
-	 <item android:id="@+id/doNotSmoothen" android:title="@string/doNotSmoothen"/>
+    <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/CA_trace"
+                android:title="@string/AsMainchainTrace" />
+            <item
+                android:id="@+id/Ribbon"
+                android:title="@string/AsRibbon" />
+            <item
+                android:id="@+id/ThickRibbon"
+                android:title="@string/AsThickRibbon" />
+            <item
+                android:id="@+id/Strand"
+                android:title="@string/AsStrand" />
+            <item
+                android:id="@+id/Tube"
+                android:title="@string/AsBFactorTube" />
+            <item
+                android:id="@+id/Bonds"
+                android:title="@string/AsBonds" />
+            <item
+                android:id="@+id/MainchainNone"
+                android:title="@string/None" />
+        </group>
+        <group android:checkableBehavior="all">
+            <item
+                android:id="@+id/doNotSmoothen"
+                android:title="@string/doNotSmoothen" />
   </group>
   <group android:checkableBehavior="all" >
 	 <item android:id="@+id/Sidechain" android:title="@string/ShowSidechains"/>
   </group>
-  <group android:checkableBehavior="single"  android:id="@+id/NucleicAcidMode">
-	<item android:id="@+id/basePolygon" android:title="@string/BaseAsPolygon"/>
-    <item android:id="@+id/baseLine" android:title="@string/BaseAsLine"/>
-    <item android:id="@+id/baseNone" android:title="@string/None"/>
-  </group>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/basePolygon"
+                android:title="@string/BaseAsPolygon" />
+            <item
+                android:id="@+id/baseLine"
+                android:title="@string/BaseAsLine" />
+            <item
+                android:id="@+id/baseNone"
+                android:title="@string/None" />
+        </group>
   </menu>
 </item>
 

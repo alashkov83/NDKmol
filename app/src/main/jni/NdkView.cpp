@@ -125,78 +125,80 @@ void drawNucleicAcidLadder(Renderable &scene, std::vector<int> &atomlist);
 
 #ifdef __ANDROID__
 // onSurfaceChanged
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLResize
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLResize
         (JNIEnv *env, jclass clasz, jint width, jint height) {
-	nativeGLResize(width, height);
+    nativeGLResize(width, height);
 }
 
 // onDrawFrame
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLRender
-(JNIEnv *env, jclass clasz, jfloat objX, jfloat objY, jfloat objZ,
-		jfloat ax, jfloat ay, jfloat az, jfloat rot, jfloat cameraZ, jfloat slabNear, jfloat slabFar) {
-	nativeGLRender(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLRender
+        (JNIEnv *env, jclass clasz, jfloat objX, jfloat objY, jfloat objZ,
+         jfloat ax, jfloat ay, jfloat az, jfloat rot, jfloat cameraZ, jfloat slabNear,
+         jfloat slabFar) {
+    nativeGLRender(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar);
 }
 
 // loadProtein
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadProtein
-(JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, nullptr);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeLoadProtein
+        (JNIEnv *env, jclass clasz, jstring path) {
+    const char *filename = env->GetStringUTFChars(path, nullptr);
 
-	nativeLoadProtein(filename);
+    nativeLoadProtein(filename);
 
-	env->ReleaseStringUTFChars(path, filename);
+    env->ReleaseStringUTFChars(path, filename);
 }
 
 // loadSDF
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadSDF
-(JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, nullptr);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeLoadSDF
+        (JNIEnv *env, jclass clasz, jstring path) {
+    const char *filename = env->GetStringUTFChars(path, nullptr);
 
-	nativeLoadSDF(filename);
+    nativeLoadSDF(filename);
 
-	env->ReleaseStringUTFChars(path, filename);
+    env->ReleaseStringUTFChars(path, filename);
 }
 
 // loadCCP4
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeLoadCCP4
-(JNIEnv *env, jclass clasz, jstring path) {
-	const char *filename = env->GetStringUTFChars(path, nullptr);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeLoadCCP4
+        (JNIEnv *env, jclass clasz, jstring path) {
+    const char *filename = env->GetStringUTFChars(path, nullptr);
 
-	nativeLoadCCP4(filename);
+    nativeLoadCCP4(filename);
 
-	env->ReleaseStringUTFChars(path, filename);
+    env->ReleaseStringUTFChars(path, filename);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeUpdateMap
-  (JNIEnv *env, jboolean force) {
-	nativeUpdateMap(force);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeUpdateMap
+        (JNIEnv *env, jboolean force) {
+    nativeUpdateMap(force);
 }
 
 // onSurfaceCreated
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeGLInit
-(JNIEnv *env, jclass clasz) {
-	nativeGLInit();
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLInit
+        (JNIEnv *env, jclass clasz) {
+    nativeGLInit();
 }
 
 // prepareScene
-extern "C" JNIEXPORT void JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_buildScene
-(JNIEnv *env, jclass clasz, jint proteinMode, jint hetatmMode, jint symmetryMode, jint colorMode,
-		jboolean showSidechain, jboolean showUnitcell, jint nucleicAcidMode, jboolean showSolvents,
-		jboolean doNotSmoothen, jboolean symopHetatms) {
-	buildScene(proteinMode, hetatmMode, symmetryMode, colorMode, showSidechain, showUnitcell,
-				nucleicAcidMode, showSolvents, false/*resetView*/, doNotSmoothen, symopHetatms);
+extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_buildScene
+        (JNIEnv *env, jclass clasz, jint proteinMode, jint hetatmMode, jint symmetryMode,
+         jint colorMode,
+         jboolean showSidechain, jboolean showUnitcell, jint nucleicAcidMode, jboolean showSolvents,
+         jboolean doNotSmoothen, jboolean symopHetatms) {
+    buildScene(proteinMode, hetatmMode, symmetryMode, colorMode, showSidechain, showUnitcell,
+               nucleicAcidMode, showSolvents, false/*resetView*/, doNotSmoothen, symopHetatms);
 }
 
-extern "C" JNIEXPORT jfloatArray JNICALL Java_jp_sfjp_webglmol_NDKmol_NdkView_nativeAdjustZoom
-(JNIEnv *env, jclass clasz, jint symmetryMode) {
-	jfloatArray ret = env->NewFloatArray(7);
+extern "C" JNIEXPORT jfloatArray JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeAdjustZoom
+        (JNIEnv *env, jclass clasz, jint symmetryMode) {
+    jfloatArray ret = env->NewFloatArray(7);
 
-	if (protein == nullptr) return ret;
+    if (protein == nullptr) return ret;
 
-	jboolean dummy;
-	jfloat *array = env->GetFloatArrayElements(ret, &dummy);
+    jboolean dummy;
+    jfloat *array = env->GetFloatArrayElements(ret, &dummy);
 
-	float slabNear, slabFar, cameraZ, objX, objY, objZ;
+    float slabNear, slabFar, cameraZ, objX, objY, objZ;
 
 	nativeAdjustZoom(array, array + 1, array + 2, array + 3, array + 4, array + 5, (symmetryMode ==  SYMOP_BIOMT));
 

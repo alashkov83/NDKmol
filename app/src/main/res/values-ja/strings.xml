@@ -110,4 +110,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="download">ダウンロード</string>
     <string name="delete">削除</string>
     <string name="cancel">中止</string>
+    <string name="First50K">ファイルの最初の50 KB：</string>
+    <string name="GoToSite">ウェブサイトに行く</string>
 </resources>

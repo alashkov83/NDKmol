@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "jp.sfjp.webglmol.NDKmol"
+        applicationId "com.github.alashkov83.NDKmol"
         minSdkVersion 19
         targetSdkVersion 30
 

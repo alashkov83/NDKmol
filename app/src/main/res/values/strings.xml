@@ -12,46 +12,7 @@
     <string name="useProxy">useHTTPProxy</string>
     <string name="useProxySummary">select to use HTTP proxy</string>
     <string name="useProxyTitle">Use HTTP Proxy</string>
-    <string name="about">
-NDKmol - Molecular Viewer for Android\n
-Please visit http://webglmol.sfjp.jp/ for the details and source codes. You can
-also get WebGL version there.\n
-\n
-\n
-\n
-*** LICENSE NOTICE ***
-\n
-NDKmol itself is licensed under GNU Lesser General Public License as follows.\n
-\n
-However, PDB files included as examples are under DIFFERENT conditions.\n
-Please consult http://www.rcsb.org/pdb/static.do?p=general_information/about_pdb/pdb_advisory.html\n
-\n
--------------\n
-\n
-The structure used as an example is adapted from PDB, ID 2POR:\n
- "Structure of porin refined at 1.8 A resolution"\n
-   Weiss, M.S.,  Schulz, G.E., J.Mol.Biol. 227: 493-509 (1992)
-\n
--------------\n
-\n
-NDKmol - Molecular Viewer for Android\n
-\n
-     (C) Copyright 2011-2015, biochem_fan\n
-\n
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.\n
-\n
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.\n
-\n
-You should have received a copy of the GNU Lesser General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/\n
-\n
-    </string>
+    <string name="about">"NDKmol - Molecular Viewer for Android  Please visit http://webglmol.sfjp.jp/ for the details and source codes. You can also get WebGL version there.        *** LICENSE NOTICE ***   NDKmol itself is licensed under GNU Lesser General Public License as follows.    However, PDB files included as examples are under DIFFERENT conditions.  Please consult http://www.rcsb.org/pdb/static.do?p=general_information/about_pdb/pdb_advisory.html    -------------    The structure used as an example is adapted from PDB, ID 2POR:   Structure of porin refined at 1.8 A resolution     Weiss, M.S.,  Schulz, G.E., J.Mol.Biol. 227: 493-509 (1992)   -------------    NDKmol - Molecular Viewer for Android         (C) Copyright 2011-2015, biochem_fan    This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.    You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see http://www.gnu.org/licenses/        "</string>
     <string name="unknownFileType">Unknown file type. Only .pdb / .sdf / .mol files are supported.</string>
     <string name="Zoom">Zoom</string>
     <string name="Rotate">Rotate</string>
@@ -112,4 +73,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="download">Download</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="First50K">First 50 KB of the file:</string>
+    <string name="GoToSite">Go to website</string>
 </resources>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NDKmol</string>
+    <string name="preferencesTitle">Настройки</string>
+    <string name="proxyHost">httpProxyHost</string>
+    <string name="proxyHostTitle">Адрес HTTP прокси</string>
+    <string name="proxyPortTitle">Порт HTTP прокси</string>
+    <string name="proxyPort">httpProxyPort</string>
+    <string name="useProxy">useHTTPProxy</string>
+    <string name="ShowSidechains">Показать боковые цепи</string>
+    <string name="AsSphere">Как сферы</string>
+    <string name="AsStick">Как палочки</string>
+    <string name="AsLine">Как линии</string>
+    <string name="ShowSolvents">Показать растворитель</string>
+    <string name="ByChain">По цепям</string>
+    <string name="ByStructure">По вторичной структуре</string>
+    <string name="AsRainbow">Как радуга</string>
+    <string name="PolarNonpolar">Полярные/Неполярные</string>
+    <string name="ByBFactor">По B-фактору</string>
+    <string name="ShowPacking">Показать упаковку</string>
+    <string name="ShowUnitCell">Показать эементарную ячейку</string>
+    <string name="ShowMonomer">Показать независимую часть ячейки</string>
+    <string name="ShowBiologicalUnit">Показать биологическую молекулу</string>
+    <string name="Polymer">Биополимер</string>
+    <string name="AsBFactorTube">Как трубки по B-фактору</string>
+    <string name="Ligands">Лиганды</string>
+    <string name="Color">Окраска</string>
+    <string name="Crystal">Кристалл</string>
+    <string name="Open">Открыть</string>
+    <string name="DownloadPDB">Найти и загрузить структуру</string>
+    <string name="Preferences">Настройки</string>
+    <string name="useProxySummary">Выберите для использования HTTP прокси</string>
+    <string name="useProxyTitle">Использовать HTTP прокси</string>
+    <string name="unknownFileType">Неизвестный тип файла. Поддерживаются: .pdb / .sdf / .mol</string>
+    <string name="Zoom">Увеличить/уменьшить</string>
+    <string name="Rotate">Врашать</string>
+    <string name="Move">Передвигать</string>
+    <string name="BaseAsLine">НК как линии</string>
+    <string name="About">О программе</string>
+    <string name="PDBID">ID</string>
+    <string name="searchButton">Найти</string>
+    <string name="structureTitle">Название:</string>
+    <string name="resolution">Разрешение:</string>
+    <string name="authors">Авторы:</string>
+    <string name="releaseDate">Дата релиза:</string>
+    <string name="tooManyHits">Найдено очень много элементов. Отображена лишь их часть.</string>
+    <string name="downloading">Скачивание&#8230;</string>
+    <string name="searching">Поиск&#8230;</string>
+    <string name="pleaseWait">Пожалуйста подождите</string>
+    <string name="TouchMode">Режим касаний</string>
+    <string name="resetView">Сбросить вид</string>
+    <string name="ShowHeader">Показать заголовок</string>
+    <string name="downloadError">Произошла ошибка при загрузке структуры.</string>
+    <string name="no3DSDF">"PubChem не предоставляет трехмерную структуру этого соединения (доступна только двухмерная структура). Загрузка отменена. "</string>
+    <string name="enableFog">enableFog</string>
+    <string name="enableFogTitle">Включить туман</string>
+    <string name="enableFogSummary">На некоторых устройствах это вызывает проблему с окраской структуры. Если она становится серой, пожалуйста, уберите галочку.</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="AsThickRibbon">Как широкие ленты</string>
+    <string name="AsRibbon">Как узкие ленты (быстрее)</string>
+    <string name="AsStrand">Как тяжи</string>
+    <string name="AsMainchainTrace">Как след основной цепи</string>
+    <string name="about">
+    NDKmol - Molecular Viewer для Android
+Пожалуйста посетите http://webglmol.sfjp.jp/ для получения подробной информации и исходных кодов.\n
+Вы также можете получить версию WebGL там.\n
+\n
+        *** ИНФОРМАЦИЯ О ЛИЦЕНЗИИ ***\n
+NDKmol лицензируется в соответствии с GNU Lesser General Public License.\n
+Файлы PDB, включенные в качестве примеров, лицензируются отдельно.\n
+За подробной информацией пожалуйста обратитесь по адреcу: http://www.rcsb.org/pdb/static.do?p=general_information/about_pdb/pdb_advisory.html\n
+В качестве примера использована структура порина, решённая с разрешением 1,8 A (PDB ID: 2POR; Weiss, M.S.,  Schulz, G.E., J.Mol.Biol. 227: 493-509 (1992))\n
+NDKmol - Molecular Viewer для Android © Copyright 2011-2015, biochem_fan\n
+Это бесплатная программа: вы можете распространять ее и / или изменять в соответствии с условиями  GNU Lesser General Public License,\n
+опубликованной Фондом свободного программного обеспечения, либо версии 3 лицензии,\n
+либо (по вашему выбору) любой более поздней версии. Эта программа распространяется в надежде, что она будет полезна,\n
+но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; даже без подразумеваемой гарантии ТОВАРНОГО ОБЕСПЕЧЕНИЯ или ПРИГОДНОСТИ ДЛЯ ОСОБЫХ ЦЕЛЕЙ.\n
+См. GNU Lesser General Public License для получения более подробной информации.\n
+Вы должны были получить копию GNU Lesser General Public License вместе с этой программой.
+Если нет, см. Http://www.gnu.org/licenses/</string>
+    <string name="BaseAsPolygon">НК как лестницы</string>
+    <string name="Slab">Slab</string>
+    <string name="AsBonds">Как валеннтые связи (все)</string>
+    <string name="None">Не отображать</string>
+    <string name="SymopHetatms">Применить к HETATMs</string>
+    <string name="First50K">Первые 50 КБ файла:</string>
+    <string name="doNotSmoothen">Не сглаживать листы</string>
+    <string name="download">Загрузить</string>
+    <string name="GoToSite">Перейти на сайт</string>
+</resources>

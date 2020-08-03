@@ -24,7 +24,9 @@
     
 <item android:title="@string/Polymer">
     <menu>
-        <group android:checkableBehavior="single">
+        <group
+            android:id="@+id/groupPoly"
+            android:checkableBehavior="single">
             <item
                 android:id="@+id/CA_trace"
                 android:title="@string/AsMainchainTrace" />
@@ -47,15 +49,22 @@
                 android:id="@+id/MainchainNone"
                 android:title="@string/None" />
         </group>
+
         <group android:checkableBehavior="all">
             <item
                 android:id="@+id/doNotSmoothen"
                 android:title="@string/doNotSmoothen" />
-  </group>
-  <group android:checkableBehavior="all" >
-	 <item android:id="@+id/Sidechain" android:title="@string/ShowSidechains"/>
-  </group>
-        <group android:checkableBehavior="single">
+        </group>
+
+        <group android:checkableBehavior="all">
+            <item
+                android:id="@+id/Sidechain"
+                android:title="@string/ShowSidechains" />
+        </group>
+
+        <group
+            android:id="@+id/groupNA"
+            android:checkableBehavior="single">
             <item
                 android:id="@+id/basePolygon"
                 android:title="@string/BaseAsPolygon" />
@@ -83,13 +92,24 @@
 </item>
 
 <item android:title="@string/Color">
-  <menu><group android:checkableBehavior="single" >
-	 <item android:id="@+id/Chain" android:title="@string/ByChain"/>
-    <item android:id="@+id/Structure" android:title="@string/ByStructure"/>
-    <item android:id="@+id/Chainbow" android:title="@string/AsRainbow"/>
-    <item android:id="@+id/Polarity" android:title="@string/PolarNonpolar"/>
-    <item android:id="@+id/BFactor" android:title="@string/ByBFactor"/>
-  </group></menu>
+  <menu>
+      <group android:checkableBehavior="single">
+          <item
+              android:id="@+id/Chain"
+              android:title="@string/ByChain" />
+          <item
+              android:id="@+id/Structure"
+              android:title="@string/ByStructure" />
+          <item
+              android:id="@+id/Chainbow"
+              android:title="@string/AsRainbow" />
+          <item
+              android:id="@+id/Polarity"
+              android:title="@string/PolarNonpolar" />
+          <item
+              android:id="@+id/BFactor"
+              android:title="@string/ByBFactor" />
+      </group></menu>
 </item>
     
 <item android:title="@string/Crystal">
@@ -118,8 +138,8 @@
 <item
  android:id="@+id/preferences"
  android:title="@string/Preferences"/>
-<item
- android:id="@+id/about"
- android:title="@string/About"/>
+    <item
+        android:id="@+id/about"
+        android:title="@string/About" />
 
 </menu>

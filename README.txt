@@ -1,7 +1,5 @@
 NDKmol - Molecular Viewer on Android NDK and iOS
 
-* This is "development" branch. Please use ES1 branch for a stable version *
-
 == About ==
 
 NDKmol is a molecular viewer for Android.
@@ -13,11 +11,6 @@ crystal packing can be displayed.
 
 NDKmol is very compact and optimized for performance.
 You can open large molecules like ribosome!
-
-NDKmol has same functionality as GLmol, which is written in
-WebGL/Javascript and runs on Web browsers.
-You can try GLmol at 
-http://webglmol.sourceforge.jp/index-en.html
 
 == Features ==
 
@@ -92,29 +85,7 @@ Project website is located at http://webglmol.sourceforge.jp/
 Comments and suggestions are welcome at http://sourceforge.jp/projects/webglmol/forums/ or 
 biochem_fan@users.sourceforge.jp 
 
-== iOS support ==
 
-iOS port was merged to this repository.
-
-How to use:
-
- single-finger drag - rotation
- double-finger drag(pan) - translation
- double-finger pinch - zoom
- single-finger long press - open "view settings" panel
-
-Lacking Features:
-
- File browser and PDB/PubChem searcher is not implemented.
-
-How to integrate to your code:
-
- "MolecularViewerViewController.mm" is the main view controller.
- You can invoke this controller from your code.
-
- To change models, save PDB file in the resource directory and
- call "loadMolecule" method in MolecularViewerViewController.mm
- 
  == Build instructions ==
  
  Android:
@@ -126,7 +97,7 @@ By default, iOS version uses GL ES 2.0 and Android version uses GL ES 1.0.
 To change this behaviour, please edit GLES.hpp.
 
 For Android, you need to edit three files as well.
-- Applicatin.mk
+- Application.mk
 - Android.mk
 - AndroidManifest.xml
    see comments in the file

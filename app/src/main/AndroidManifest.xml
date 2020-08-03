@@ -41,19 +41,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="jp.com.github.webglmol.NDKmol.MyPreferenceActivity"
+            android:name="com.github.alashkov83.NDKmol.MyPreferenceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="jp.com.github.webglmol.NDKmol.PDBSearcher"
+            android:name="com.github.alashkov83.NDKmol.PDBSearcher"
             android:configChanges="orientation|keyboardHidden" />
         <activity
-            android:name="jp.com.github.webglmol.NDKmol.PubChemSearcher"
+            android:name="com.github.alashkov83.NDKmol.PubChemSearcher"
             android:configChanges="orientation|keyboardHidden" />
         <activity
-            android:name="jp.com.github.webglmol.NDKmol.SearcherTab"
+            android:name="com.github.alashkov83.NDKmol.SearcherTab"
             android:configChanges="orientation|keyboardHidden" />
         <activity
-            android:name="jp.com.github.webglmol.NDKmol.FileBrowser"
+            android:name="com.github.alashkov83.NDKmol.FileBrowser"
             android:configChanges="orientation|keyboardHidden" />
     </application>
 

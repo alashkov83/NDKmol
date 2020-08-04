@@ -49,7 +49,6 @@ public class FileBrowser extends Activity {
 
     private ListView listView = null;
     private List<Map<String, String>> dataList;
-    private FileBrowser self;
     private String currentPath, selectedFile;
 
 
@@ -101,27 +100,27 @@ public class FileBrowser extends Activity {
 
     private void setFileList() {
         dataList = getFileList(currentPath);
-        SimpleAdapter adapter = new SimpleAdapter(
-                self,
-                dataList,
-                android.R.layout.simple_list_item_2,
-                new String[]{"fileName", "structureTitle"},
-                new int[]{android.R.id.text1, android.R.id.text2}
+        listView.setAdapter(new SimpleAdapter(
+                        this,
+                        dataList,
+                        android.R.layout.simple_list_item_2,
+                        new String[]{"fileName", "structureTitle"},
+                        new int[]{android.R.id.text1, android.R.id.text2}
+                )
         );
-        listView.setAdapter(adapter);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo) {
-        if (v.getId() != listView.getId()) return;
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.filecontextmenu, menu);
-        AdapterContextMenuInfo contextMenuInfo = (AdapterContextMenuInfo) menuInfo;
-        Map<String, String> item = (Map<String, String>) listView.getItemAtPosition(contextMenuInfo.position);
-        selectedFile = item.get("fileName");
-        menu.setHeaderTitle(selectedFile);
+        if (v.getId() == listView.getId()) {
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.filecontextmenu, menu);
+            AdapterContextMenuInfo contextMenuInfo = (AdapterContextMenuInfo) menuInfo;
+            Map<String, String> item = (Map<String, String>) listView.getItemAtPosition(contextMenuInfo.position);
+            selectedFile = item.get("fileName");
+            menu.setHeaderTitle(selectedFile);
+        }
     }
 
     @Override
@@ -134,13 +133,12 @@ public class FileBrowser extends Activity {
                 deleteSelectedFile();
                 break;
         }
-
         return true;
     }
 
     private void deleteSelectedFile() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure to delete " + selectedFile + "?")
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure to delete " + selectedFile + "?")
                 .setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -149,20 +147,19 @@ public class FileBrowser extends Activity {
                             File file = new File(currentPath + selectedFile);
                             file.delete();
                         } catch (Exception e) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
-                            builder.setMessage("Failed to delete " + selectedFile)
+                            new AlertDialog.Builder(getApplication())
+                                    .setMessage("Failed to delete " + selectedFile)
                                     .setCancelable(false)
-                                    .setPositiveButton("OK", null);
-                            AlertDialog alert = builder.create();
-                            alert.show();
+                                    .setPositiveButton("OK", null)
+                                    .create()
+                                    .show();
                         }
                         setFileList(); // MEMO: This is expensive.
                         // Actually we should update dataList and use notifyDataSetChanged.
                     }
                 })
-                .setNegativeButton("Cancel", null);
-        AlertDialog alert = builder.create();
-        alert.show();
+                .setNegativeButton("Cancel", null).create()
+                .show();
     }
 
     private void openSelectedFile() {
@@ -176,13 +173,11 @@ public class FileBrowser extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        self = this;
+        FileBrowser self = this;
         setContentView(R.layout.filebrowser);
         String tmp = getIntent().getDataString();
-        Log.d("FileBrowser", tmp);
         currentPath = tmp.substring(7) + "/"; // file:// TODO: Error handling
-
-        listView = (ListView) findViewById(R.id.searchResults);
+        listView = findViewById(R.id.searchResults);
         dataList = null;
 
         listView.setOnItemClickListener(new OnItemClickListener() {

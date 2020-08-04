@@ -48,10 +48,6 @@ Color::Color(unsigned int c) {
 //	__android_log_print(ANDROID_LOG_DEBUG,"Color","Color %#hx converted to %f, %f, %f", c, r, g, b);
 }
 
-std::string Color::toString() {
-		//return "(" + r + ", " + g + ", " + b + ")";
-	return ""; // FIXME: implement
-}
 
 void Color::setHSV(float h, float s, float v) {
 	if (v == 0) return;

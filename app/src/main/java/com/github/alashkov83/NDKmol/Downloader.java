@@ -139,7 +139,6 @@ public class Downloader {
 					httpConn.disconnect();
 				} else {
 					inp = new DataInputStream(httpConn.getErrorStream());
-					out = new FileOutputStream(dest);
 					inp.read(buffer);
 
 					String str = new String(buffer);

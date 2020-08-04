@@ -106,7 +106,7 @@ void RibbonStrip::initMesh(const float *points1, const float *points2, std::vect
 	for (int i = 1; i < size; i++) {
 		int faceOffset = i * 8;
 		for (int face : faces) {
-			*(fb++) = (short)(faceOffset + face);
+			*(fb++) = static_cast<unsigned short>((short) (faceOffset + face));
 		}
 	}
 	
@@ -208,14 +208,14 @@ void RibbonStrip::initMesh(const float *points1, const float *points2, std::vect
 		*(vb++) = points2[vertexOffset + 1];
 		*(vb++) = points2[vertexOffset + 2];
 		vertexOffset += 3;
-		
+
 		if (i == 0) continue;
-		*(fb++) = (short)(faceOffset - 2);
-		*(fb++) = (short)(faceOffset - 1);
-		*(fb++) = (short)faceOffset;
-		*(fb++) = (short)faceOffset;
-		*(fb++) = (short)(faceOffset - 1);
-		*(fb++) = (short)(faceOffset + 1);
+		*(fb++) = static_cast<unsigned short>((short) (faceOffset - 2));
+		*(fb++) = static_cast<unsigned short>((short) (faceOffset - 1));
+		*(fb++) = static_cast<unsigned short>((short) faceOffset);
+		*(fb++) = static_cast<unsigned short>((short) faceOffset);
+		*(fb++) = static_cast<unsigned short>((short) (faceOffset - 1));
+		*(fb++) = static_cast<unsigned short>((short) (faceOffset + 1));
 		faceOffset += 2;
 	}
 	

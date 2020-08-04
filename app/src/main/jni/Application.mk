@@ -3,7 +3,7 @@
 
 APP_PLATFORM := android-19
 APP_STL := c++_static
-APP_ABI := all
+APP_ABI := armeabi-v7a x86
 LOCAL_MODULE    := Ndkmol
 NDK_TOOLCHAIN_VERSION := clang
 APP_CPPFLAGS += -std=c++11 

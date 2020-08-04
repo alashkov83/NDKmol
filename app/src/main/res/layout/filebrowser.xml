@@ -5,30 +5,6 @@
     android:layout_height="fill_parent"
     >
 
-     <LinearLayout
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <!--<EditText
-            android:id="@+id/keyword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:singleLine="true" >
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="@string/searchButton" />-->
-
-    </LinearLayout> 
-
     <ListView
         android:id="@+id/searchResults"
         android:layout_width="fill_parent"

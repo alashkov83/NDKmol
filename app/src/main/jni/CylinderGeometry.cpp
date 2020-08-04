@@ -83,12 +83,12 @@ void CylinderGeometry::prepare(int div) {
 	faceBuffer = new unsigned short[nFaces * 3];
 	offset = 0;
 	for (int i = 0; i < div; i++) {
-		faceBuffer[6 * i] = (short) (offset);
-		faceBuffer[6 * i + 1] = (short) (offset + 1);
-		faceBuffer[6 * i + 2] = (short) (offset + 2);
-		faceBuffer[6 * i + 3] = (short) (offset + 2);
-		faceBuffer[6 * i + 4] = (short) (offset + 1);
-		faceBuffer[6 * i + 5] = (short) (offset + 3);
+		faceBuffer[6 * i] = static_cast<unsigned short>((short) (offset));
+		faceBuffer[6 * i + 1] = static_cast<unsigned short>((short) (offset + 1));
+		faceBuffer[6 * i + 2] = static_cast<unsigned short>((short) (offset + 2));
+		faceBuffer[6 * i + 3] = static_cast<unsigned short>((short) (offset + 2));
+		faceBuffer[6 * i + 4] = static_cast<unsigned short>((short) (offset + 1));
+		faceBuffer[6 * i + 5] = static_cast<unsigned short>((short) (offset + 3));
 		offset += 2;
 	}
 }

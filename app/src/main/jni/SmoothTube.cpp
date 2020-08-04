@@ -99,12 +99,18 @@ SmoothTube::SmoothTube(std::vector<Vector3> &_points, std::vector<Color> &colors
                                         vertices[vo1 + 2] - vertices[vo2 + 5]);
         if (r1 > r2) { reg = 1; }
         for (int j = 0; j < circleDiv; j++) {
-            faces[foffset++] = (short) (voffset + j);
-            faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
-            faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
-            faces[foffset++] = (short) (voffset + (j + 1) % circleDiv);
-            faces[foffset++] = (short) (voffset + (j + reg) % circleDiv + circleDiv);
-            faces[foffset++] = (short) (voffset + (j + reg + 1) % circleDiv + circleDiv);
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset + j));
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset +
+                                                                    (j + reg) % circleDiv +
+                                                                    circleDiv));
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset + (j + 1) % circleDiv));
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset + (j + 1) % circleDiv));
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset +
+                                                                    (j + reg) % circleDiv +
+                                                                    circleDiv));
+            faces[foffset++] = static_cast<unsigned short>((short) (voffset +
+                                                                    (j + reg + 1) % circleDiv +
+                                                                    circleDiv));
         }
         voffset += circleDiv;
     }

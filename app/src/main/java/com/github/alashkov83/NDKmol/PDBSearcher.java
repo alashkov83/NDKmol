@@ -21,7 +21,6 @@ package com.github.alashkov83.NDKmol;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -181,9 +180,9 @@ public class PDBSearcher extends Activity {
             proxy = null;
         }
 
-        listView = (ListView) findViewById(R.id.searchResults);
-        Button searchButton = (Button) findViewById(R.id.searchButton);
-        keyword = (EditText) findViewById(R.id.keyword);
+        listView = findViewById(R.id.searchResults);
+        Button searchButton = findViewById(R.id.searchButton);
+        keyword = findViewById(R.id.keyword);
         searchButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,6 +192,7 @@ public class PDBSearcher extends Activity {
         });
 
         listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Map<String, String> item = (Map<String, String>) listView.getItemAtPosition(position);
@@ -212,7 +212,7 @@ public class PDBSearcher extends Activity {
                 ((TextView) detailsView.findViewById(R.id.textAuthors)).setText(item.get("structureAuthor"));
                 ((TextView) detailsView.findViewById(R.id.textReleaseDate)).setText(item.get("releaseDate"));
 
-                Builder b = new AlertDialog.Builder(self)
+                new AlertDialog.Builder(self)
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("Structure details")
                         .setView(detailsView)
@@ -231,8 +231,8 @@ public class PDBSearcher extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                             }
-                        });
-                b.show();
+                        })
+                        .show();
             }
         });
     }
@@ -258,14 +258,13 @@ public class PDBSearcher extends Activity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            SimpleAdapter adapter = new SimpleAdapter(
+            listView.setAdapter(new SimpleAdapter(
                     self,
                     dataList,
                     android.R.layout.simple_list_item_2,
                     new String[]{"structureId", "structureTitle"},
                     new int[]{android.R.id.text1, android.R.id.text2}
-            );
-            listView.setAdapter(adapter);
+            ));
             progress.dismiss();
         }
     }

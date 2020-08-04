@@ -23,7 +23,6 @@
 #include <vector>
 #include <set>
 #include <string>
-#include <cstdlib>
 #include <map>
 #include "GLES.hpp"
 #include "Color.hpp"
@@ -234,13 +233,13 @@ void nativeSetScene(float objX, float objY, float objZ, float ax, float ay, floa
 	Mat16 tCamera = translationMatrix(0, 0, sceneInfo.cameraZ);
 	Mat16 r = rotationMatrix(rot, ax, ay, az);
 	Mat16 centering = translationMatrix(objX, objY, objZ);
-    sceneInfo.rotationGroupMatrix = multiplyMatrix(tCamera, r);
-    sceneInfo.modelGroupMatrix = multiplyMatrix(sceneInfo.rotationGroupMatrix, centering);
-	
+	sceneInfo.rotationGroupMatrix = multiplyMatrix(tCamera, r);
+	sceneInfo.modelGroupMatrix = multiplyMatrix(sceneInfo.rotationGroupMatrix, centering);
+
 	// TODO: Should be moved to appropriate place.
 	// I hope this doesn't do harm in buggy Android devices because GL_FOG is disabled by default.
 #ifdef OPENGL_ES1
-	glFogf(GL_FOG_START, cameraNear * 0.3 + cameraFar * 0.7);
+	glFogf(GL_FOG_START, static_cast<GLfloat>(cameraNear * 0.3 + cameraFar * 0.7));
 	glFogf(GL_FOG_END, cameraFar);
 #endif
 }
@@ -254,16 +253,16 @@ void nativeGLRender(float objX, float objY, float objZ, float ax, float ay, floa
 
 void nativeGLRender() {
 	if (scene == nullptr) return;
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_CULL_FACE);
-	
+	glClearColor(0, 0, 0, 1); // TODO: Set bg color
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_CULL_FACE);
+
 #ifdef OPENGL_ES1
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glLoadMatrixf(sceneInfo.projectionMatrix.m);
 #else
-	
+
 #endif
     
 	currentModelViewMatrix = sceneInfo.modelGroupMatrix;
@@ -349,17 +348,17 @@ void nativeAdjustZoom(float *objX, float *objY, float *objZ, float *cameraZ, flo
 	*objX *= -1; *objY *= -1; *objZ *= -1; 
 	
 	float FOV = 20;
-	
+
 	float x = extent[3] - extent[0], y = extent[4] - extent[1], z = extent[5] - extent[2];
-	auto maxD = (float)std::sqrt(x * x + y * y + z * z);
+	auto maxD = (float) std::sqrt(x * x + y * y + z * z);
 	if (maxD < 25) maxD = 25;
 	if (nBiomt > 20) maxD = 800;
-	
+
 	*slabNear = -maxD / 1.9f;
 	*slabFar = maxD / 3;
-	*cameraZ = -(float)(maxD * 0.5 / std::tan(M_PI / 180.0 * FOV / 2));
-	
-	free(extent);
+	*cameraZ = -(float) (maxD * 0.5 / std::tan(M_PI / 180.0 * FOV / 2));
+
+	delete[] extent;
 }
 
 
@@ -490,31 +489,32 @@ void nativeUpdateMap(bool force) {
 	Vector3 center(-sceneInfo.objX, -sceneInfo.objY, -sceneInfo.objZ);
 	center.applyMat16(invMatrix);
 	printf("%f %f %f cz = %f\n", center.x, center.y, center.z, sceneInfo.cameraZ);
-	ms->build((int)center.x, (int)center.y, (int)center.z, mapRadius, mapIsoLevel);
+	ms->build((int) center.x, (int) center.y, (int) center.z, static_cast<int>(mapRadius),
+			  mapIsoLevel);
 }
 
 void nativeGLInit() {
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0, 0, 0, 1); // TODO: Set bg color
 	glEnable(GL_DEPTH_TEST);
 //  glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_LEQUAL);
+	glDepthFunc(GL_LEQUAL);
 	glDisable(GL_DITHER);
-    glDisable(GL_TEXTURE_2D);
-	
+	glDisable(GL_TEXTURE_2D);
+
 #ifndef OPENGL_ES1
     // Initialize Shader
-	shaderProgram = CreateShader(vertexShader, fragmentShader);
-    
-	if (shaderProgram != 0) {
-	    shaderVertexPosition = glGetAttribLocation(shaderProgram, "vertexPosition");
-	    shaderVertexNormal = glGetAttribLocation(shaderProgram, "vertexNormal");
+    shaderProgram = CreateShader(vertexShader, fragmentShader);
+
+    if (shaderProgram != 0) {
+        shaderVertexPosition = glGetAttribLocation(shaderProgram, "vertexPosition");
+        shaderVertexNormal = glGetAttribLocation(shaderProgram, "vertexNormal");
         shaderProjectionMatrix = glGetUniformLocation(shaderProgram, "projectionMatrix");
         shaderModelViewMatrix = glGetUniformLocation(shaderProgram, "modelviewMatrix");
         shaderNormalMatrix = glGetUniformLocation(shaderProgram, "normalMatrix");
-        
+
         shaderVertexColor = glGetAttribLocation(shaderProgram, "vertexColor");
-	} else {
+    } else {
         printf("Failed to create shader\n");
     }
 #endif
@@ -572,8 +572,13 @@ float* getExtent(std::vector<int> &atomlist) {
 		if (atom->z > maxz) maxz = atom->z;
 	}
 
-	auto *ret = (float*)malloc(sizeof(float) * 6);
-	ret[0] = minx; ret[1] = miny; ret[2] = minz; ret[3] = maxx; ret[4] = maxy; ret[5] = maxz;
+	auto *ret = new float[6];
+	ret[0] = minx;
+	ret[1] = miny;
+	ret[2] = minz;
+	ret[3] = maxx;
+	ret[4] = maxy;
+	ret[5] = maxz;
 
 	return ret;
 }
@@ -824,7 +829,8 @@ void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float cur
 			currentResi = atom->resi;
 		}
 	}
-	scene.children.push_back(new SmoothCurve(points, colors, curveWidth * 1.5, DIV));
+	scene.children.push_back(
+			new SmoothCurve(points, colors, static_cast<float>(curveWidth * 1.5), DIV));
 }
 
 void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std::string& atomName) {
@@ -844,7 +850,7 @@ void drawMainchainTube(Renderable &scene, std::vector<int> &atomlist, const std:
 				colors.clear();
 				radii.clear();
 			}
-			radii.push_back((atom->b > 0) ? atom->b / 100 : 0.3);
+			radii.push_back(static_cast<float &&>((atom->b > 0) ? atom->b / 100 : 0.3));
 			points.emplace_back(atom->x, atom->y, atom->z);
 			colors.push_back(atom->color);
 			currentChain = atom->chain;
@@ -1161,19 +1167,21 @@ void drawStrand(Renderable &scene, std::vector<int> &atomlist, int num, int div,
 				colors.push_back(atom->color);
 			} else { // O
 				Vector3 O = Vector3(atom->x, atom->y, atom->z);
-				O.x -= currentCA.x; O.y -= currentCA.y; O.z -= currentCA.z;
+				O.x -= currentCA.x;
+				O.y -= currentCA.y;
+				O.z -= currentCA.z;
 				O.normalize(); // can be omitted for performance
-				O.multiplyScalar((ss == "c") ? 0.3 : 1.3);
+				O.multiplyScalar(static_cast<float>((ss == "c") ? 0.3 : 1.3));
 				if (prevCO.x != -9999 && Vector3::dot(O, prevCO) < 0) {
 					O.multiplyScalar(-1);
 				}
 				prevCO = O;
 				for (int j = 0; j < num; j++) {
-                    float delta = -1 + 2.0f / (float) (num - 1) * j;
-                    points[j].emplace_back(currentCA.x + prevCO.x * delta,
-                                           currentCA.y + prevCO.y * delta,
-                                           currentCA.z + prevCO.z * delta);
-                }
+					float delta = -1 + 2.0f / (float) (num - 1) * j;
+					points[j].emplace_back(currentCA.x + prevCO.x * delta,
+										   currentCA.y + prevCO.y * delta,
+										   currentCA.z + prevCO.z * delta);
+				}
 				smoothen.push_back(!doNotSmoothen && ss == "s");
 			}
 		}

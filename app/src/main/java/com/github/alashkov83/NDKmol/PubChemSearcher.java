@@ -187,10 +187,10 @@ public class PubChemSearcher extends Activity {
         }
 
 
-        listView = (ListView) findViewById(R.id.searchResults);
+        listView = findViewById(R.id.searchResults);
         dataList = null;
-        Button searchButton = (Button) findViewById(R.id.searchButton);
-        keyword = (EditText) findViewById(R.id.keyword);
+        Button searchButton = findViewById(R.id.searchButton);
+        keyword = findViewById(R.id.keyword);
         searchButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 String[] tmp = {keyword.getText().toString()};
@@ -219,7 +219,7 @@ public class PubChemSearcher extends Activity {
                         .setPositiveButton("Download", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Intent i = new Intent();
-                                i.setData(Uri.parse(pubchemDownloadURI.replaceFirst("#ID#", PDBid)));
+                                i.setData(Uri.parse(pubchemDownloadURI.replaceFirst("#ID#", Objects.requireNonNull(PDBid))));
                                 setResult(RESULT_OK, i);
                                 getIntent().setData(i.getData());
                                 finish();
@@ -257,14 +257,13 @@ public class PubChemSearcher extends Activity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            SimpleAdapter adapter = new SimpleAdapter(
+            listView.setAdapter(new SimpleAdapter(
                     self,
                     dataList,
                     android.R.layout.simple_list_item_2,
                     new String[]{"structureId", "structureTitle"},
                     new int[]{android.R.id.text1, android.R.id.text2}
-            );
-            listView.setAdapter(adapter);
+            ));
             progress.dismiss();
         }
     }

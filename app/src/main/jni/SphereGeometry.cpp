@@ -75,14 +75,14 @@ void SphereGeometry::prepare(int div1, int div2) {
 	offset = 0;
 	for (int i = 0; i < div1; i++) { // z
 		for (int j = 0; j < div2; j++) {
-			faceBuffer[offset] = (short)((div2 + 1) * i + j);
-			faceBuffer[offset + 1] = (short) ((div2 + 1) * i + j + 1);
-			faceBuffer[offset + 2] = (short)((div2 + 1) * (i + 1) + j + 1);
-			faceBuffer[offset + 3] = (short)((div2 + 1) * i + j);
-			faceBuffer[offset + 4] = (short) ((div2 + 1) * (i + 1) + j + 1);
-			faceBuffer[offset + 5] = (short)((div2 + 1) * (i + 1) + j);
-			offset += 6;
-		}
+            faceBuffer[offset] = (unsigned short) ((div2 + 1) * i + j);
+            faceBuffer[offset + 1] = (unsigned short) ((div2 + 1) * i + j + 1);
+            faceBuffer[offset + 2] = (unsigned short) ((div2 + 1) * (i + 1) + j + 1);
+            faceBuffer[offset + 3] = (unsigned short) ((div2 + 1) * i + j);
+            faceBuffer[offset + 4] = (unsigned short) ((div2 + 1) * (i + 1) + j + 1);
+            faceBuffer[offset + 5] = (unsigned short) ((div2 + 1) * (i + 1) + j);
+            offset += 6;
+        }
 	}
 
 	vertexNormalBuffer = vertexBuffer;

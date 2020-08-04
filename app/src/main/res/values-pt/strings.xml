@@ -36,7 +36,7 @@ A estrutura utilizada como um exemplo foi adaptada do PDB, ID 2POR:\n
 \n
 NDKmol - Visualizador Molecular para Android\n
 \n
-     (C) Copyright 2011, biochem_fan\n
+     © Copyright 2011, biochem_fan\n
 \n
 Este programa é software livre: você pode redistribuí-lo e/ou modificá-lo
 sob os mesmo termos da GNU Lesser General Public License como publicado pela
@@ -93,7 +93,7 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="releaseDate">Lançado em:</string>
     <string name="tooManyHits">Muitos resultados encontrados. Exibindo apenas uma parte deles.</string>
     <string name="downloading">Baixando&#8230;</string>
-    <string name="searching">Pesquisando...</string>
+    <string name="searching">Pesquisando…</string>
     <string name="pleaseWait">Por favor espere</string>
     <string name="TouchMode">Modo de Toque</string>
     <string name="Slab">Slab</string>
@@ -114,4 +114,5 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="cancel">Cancelar</string>
     <string name="First50K">Primeiros 50 KB do arquivo:</string>
     <string name="GoToSite">Ir para o site</string>
+    <string name="make_screenshot">Make screenshot</string>
 </resources>

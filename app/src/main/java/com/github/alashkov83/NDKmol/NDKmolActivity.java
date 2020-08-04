@@ -41,6 +41,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class NDKmolActivity extends Activity {
@@ -114,7 +115,7 @@ public class NDKmolActivity extends Activity {
             glSV.setEGLContextClientVersion(2);
         }
 
-        view = new NdkView();
+        view = new NdkView(this);
         glSV.setRenderer(view);
         applyPreferences();
 
@@ -215,7 +216,7 @@ public class NDKmolActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IntentForURI && resultCode == RESULT_OK) {
-            readURI(data.getDataString());
+            readURI(Objects.requireNonNull(data.getDataString()));
         } else if (requestCode == IntentForPreferences) {
             applyPreferences();
         }
@@ -253,8 +254,8 @@ public class NDKmolActivity extends Activity {
     }
 
     public void about() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.about))
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.about))
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -264,13 +265,11 @@ public class NDKmolActivity extends Activity {
                 .setNeutralButton(getResources().getString(R.string.GoToSite), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Uri uri = Uri.parse("http://webglmol.sfjp.jp/");
+                        Uri uri = Uri.parse("http://github.com/alashkov83/NDKmol");
                         Intent i = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(i);
                     }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+                }).create().show();
     }
 
     @Override
@@ -427,6 +426,12 @@ public class NDKmolActivity extends Activity {
                 break;
             case R.id.downloadPDB:
                 download();
+                break;
+
+            case R.id.makeShot:
+                view.screenshot = true;
+                view.prepareScene();
+                glSV.requestRender();
                 break;
 
             case R.id.preferences:
@@ -618,7 +623,7 @@ public class NDKmolActivity extends Activity {
     public boolean onTouchEvent(MotionEvent e) {
         float x = e.getX();
         float y = e.getY();
-        int pointerCount = 1;
+        int pointerCount;
         float distance = -1;
         pointerCount = MultitouchWrapper.getPointerCount(e);
         if (pointerCount > 1) {
@@ -644,7 +649,7 @@ public class NDKmolActivity extends Activity {
 //			Log.d("event", "down delta = " + (currentTime - lastTouchTime));
                 if (currentTime - lastTouchTime < 200 && pointerCount == 1) { // double tap
                     // TODO: This behavior must be refined! Now it is not very intuitive.
-                    Vector3 vec = new Vector3((float) x / view.width - 0.5f, (float) -y / view.height + 0.5f, 0.0f);
+                    Vector3 vec = new Vector3(x / view.width - 0.5f, -y / view.height + 0.5f, 0.0f);
                     Vector3 translation = view.rotationQ.rotateVector(vec);
                     Log.d("event", "x = " + translation.x + "y = " + translation.y + "z = " + translation.z);
                     view.objX = -translation.x * 100;

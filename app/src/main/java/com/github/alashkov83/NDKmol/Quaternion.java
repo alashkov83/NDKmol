@@ -19,6 +19,8 @@
 
 package com.github.alashkov83.NDKmol;
 
+import androidx.annotation.NonNull;
+
 public class Quaternion {
     public float x, y, z, w;
 
@@ -41,6 +43,7 @@ public class Quaternion {
         return new Vector3(q.x, q.y, q.z);
     }
 
+    @NonNull
     public Quaternion clone() {
         return new Quaternion(x, y, z, w);
     }
@@ -69,6 +72,7 @@ public class Quaternion {
         return ret;
     }
 
+    @NonNull
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ", " + w + ")";
     }

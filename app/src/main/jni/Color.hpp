@@ -29,7 +29,6 @@ public:
 	Color();
 	Color(unsigned int c);
 	Color(float r, float g, float b, float a);
-	std::string toString();
 	void setHSV(float h, float s, float v);
 	void setRGB(float r, float g, float b, float a);
 };

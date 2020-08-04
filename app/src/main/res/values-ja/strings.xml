@@ -34,7 +34,7 @@ The structure used as an example is adapted from PDB, ID 2POR:\n
 -------------\n
 NDKmol - Molecular Viewer for Android\n
 \n
-     (C) Copyright 2011-2015, biochem_fan\n
+     © Copyright 2011-2015, biochem_fan\n
 \n
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -112,4 +112,5 @@ along with this program.  If not, see http://www.gnu.org/licenses/\n
     <string name="cancel">中止</string>
     <string name="First50K">ファイルの最初の50 KB：</string>
     <string name="GoToSite">ウェブサイトに行く</string>
+    <string name="make_screenshot">Make screenshot</string>
 </resources>

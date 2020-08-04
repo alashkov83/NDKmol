@@ -88,4 +88,5 @@ NDKmol - Molecular Viewer для Android © Copyright 2011-2015, biochem_fan\n
     <string name="doNotSmoothen">Не сглаживать листы</string>
     <string name="download">Загрузить</string>
     <string name="GoToSite">Перейти на сайт</string>
+    <string name="make_screenshot">Снимок экрана</string>
 </resources>

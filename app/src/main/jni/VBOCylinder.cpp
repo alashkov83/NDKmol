@@ -75,36 +75,36 @@ void VBOCylinder::render() {
         prepareVBO();
     }
 	glPushMatrix();
-	setMatrix();
-    
+    setMatrix();
+
 #ifdef OPENGL_ES1
-	glColor4f(objectColor.r, objectColor.g, objectColor.b, objectColor.a);
-	glDisableClientState(GL_COLOR_ARRAY);
+    glColor4f(objectColor.r, objectColor.g, objectColor.b, objectColor.a);
+    glDisableClientState(GL_COLOR_ARRAY);
 #else
     glDisableVertexAttribArray(shaderVertexColor);
     glVertexAttrib4f(shaderVertexColor, objectColor.r, objectColor.g, objectColor.b, objectColor.a);
 #endif
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, static_cast<GLuint>(vertexVBO));
 #ifdef OPENGL_ES1
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, nullptr);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, nullptr);
 #else
-	glEnableVertexAttribArray(shaderVertexPosition);
+    glEnableVertexAttribArray(shaderVertexPosition);
     glVertexAttribPointer(shaderVertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
 #endif
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexNormalVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, static_cast<GLuint>(vertexNormalVBO));
 #ifdef OPENGL_ES1
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glNormalPointer(GL_FLOAT, 0, nullptr);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glNormalPointer(GL_FLOAT, 0, nullptr);
 #else
-	glEnableVertexAttribArray(shaderVertexNormal);
+    glEnableVertexAttribArray(shaderVertexNormal);
     glVertexAttribPointer(shaderVertexNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 #endif
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVBO);
-	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, nullptr);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLuint>(faceVBO));
+    glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, nullptr);
 
 #ifdef OPENGL_ES1
 	glDisableClientState(GL_VERTEX_ARRAY);

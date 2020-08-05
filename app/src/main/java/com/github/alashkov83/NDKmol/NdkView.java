@@ -59,6 +59,7 @@ public class NdkView implements GLSurfaceView.Renderer {
     public int colorMode = 0;
     public boolean fogEnabled = false;
     public boolean screenshot = false;
+    public int bg_color = 0;
 
 
     public NdkView(NDKmolActivity parent) {
@@ -66,12 +67,12 @@ public class NdkView implements GLSurfaceView.Renderer {
         resetCamera();
     }
 
-    private static native void nativeGLInit();
+    private static native void nativeGLInit(int bg_color);
 
     private static native void nativeGLResize(int w, int h);
 
     private static native void nativeGLRender(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
-                                              float cameraZ, float slabNear, float slabFar);
+                                              float cameraZ, float slabNear, float slabFar, int bg_color);
 
     private static native void nativeLoadProtein(String path);
 
@@ -112,10 +113,28 @@ public class NdkView implements GLSurfaceView.Renderer {
                 if (cameraNear < 1) cameraNear = 1;
                 float cameraFar = -cameraZ + slabFar;
                 if (cameraNear + 1 > cameraFar) cameraFar = cameraNear + 1;
-
                 gl.glEnable(GL10.GL_FOG);
-                gl.glFogf(GL10.GL_FOG_MODE, GL10.GL_LINEAR); // EXP, EXP2 is not supported
-                gl.glFogfv(GL10.GL_FOG_COLOR, new float[]{0, 0, 0, 1}, 0);
+                gl.glFogf(GL10.GL_FOG_MODE, GL10.GL_LINEAR);
+                float r = 0;
+                float g = 0;
+                float b = 0;
+                switch (bg_color) {
+                    case 0:
+                        r = 0;
+                        g = 0;
+                        b = 0;
+                        break;
+                    case 1:
+                        r = 1;
+                        g = 1;
+                        b = 1;
+                        break;
+                    case 2:
+                        r = 0.7f;
+                        g = 0.7f;
+                        b = 0.7f;
+                }
+                gl.glFogfv(GL10.GL_FOG_COLOR, new float[]{r, g, b, 1}, 0);
                 gl.glFogf(GL10.GL_FOG_DENSITY, 0.5f);
                 //		gl.glHint(GL10.GL_FOG_HINT, GL10.GL_DONT_CARE);
                 gl.glFogf(GL10.GL_FOG_START, cameraNear * 0.3f + cameraFar * 0.7f);
@@ -126,7 +145,7 @@ public class NdkView implements GLSurfaceView.Renderer {
         }
         Vector3 axis = rotationQ.getAxis();
         nativeGLRender(objX, objY, objZ, axis.x, axis.y, axis.z, rotationQ.getAngle(),
-                cameraZ, slabNear, slabFar);
+                cameraZ, slabNear, slabFar, this.bg_color);
 
         if (screenshot) {
             int screenshotSize = width * height;
@@ -204,7 +223,7 @@ public class NdkView implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
-        nativeGLInit();
+        nativeGLInit(bg_color);
 
         if (NDKmolActivity.GLES1) {
             gl.glDisable(GL10.GL_FOG);

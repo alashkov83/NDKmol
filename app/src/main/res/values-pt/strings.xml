@@ -5,10 +5,8 @@
     <string name="preferencesTitle">Preferências</string>
     <string name="proxyHost">httpProxyHost</string>
     <string name="proxyHostTitle">Host do Proxy HTTP</string>
-    <string name="proxyHostSummary"></string>
     <string name="proxyPortTitle">Porta do Proxy HTTP</string>
     <string name="proxyPort">httpProxyPort</string>
-    <string name="proxyPortSummary"></string>
     <string name="useProxy">useHTTPProxy</string>
     <string name="useProxySummary">selecione para usar proxy HTTP</string>
     <string name="useProxyTitle">Usar Proxy HTTP</string>
@@ -87,7 +85,6 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="searchButton">Pesquisar</string>
     <string name="PDBID">ID:</string>
     <string name="structureTitle">Título:</string>
-    <string name="blank"></string>
     <string name="resolution">Resolução:</string>
     <string name="authors">Autores:</string>
     <string name="releaseDate">Lançado em:</string>
@@ -114,5 +111,6 @@ junto com este programa.  Caso negativo, veja http://www.gnu.org/licenses/\n
     <string name="cancel">Cancelar</string>
     <string name="First50K">Primeiros 50 KB do arquivo:</string>
     <string name="GoToSite">Ir para o site</string>
-    <string name="make_screenshot">Make screenshot</string>
+    <string name="make_screenshot">Faça a captura de tela</string>
+    <string name="background">Fundo</string>
 </resources>

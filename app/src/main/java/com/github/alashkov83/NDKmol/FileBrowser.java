@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FileBrowser extends Activity {
 
@@ -173,10 +174,9 @@ public class FileBrowser extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FileBrowser self = this;
         setContentView(R.layout.filebrowser);
         String tmp = getIntent().getDataString();
-        currentPath = tmp.substring(7) + "/"; // file:// TODO: Error handling
+        currentPath = Objects.requireNonNull(tmp).substring(7) + "/"; // file:// TODO: Error handling
         listView = findViewById(R.id.searchResults);
         dataList = null;
 

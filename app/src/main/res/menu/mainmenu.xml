@@ -124,6 +124,25 @@
                 <item
                     android:id="@+id/BFactor"
                     android:title="@string/ByBFactor" />
+                <item
+                    android:id="@+id/Hydrophobicity"
+                    android:title="@string/hydrophobicity" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/background">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/bgBlack"
+                    android:title="@string/black" />
+                <item
+                    android:id="@+id/bgWhite"
+                    android:title="@string/white" />
+                <item
+                    android:id="@+id/bgGray"
+                    android:title="@string/gray" />
             </group>
         </menu>
     </item>

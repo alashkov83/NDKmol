@@ -368,6 +368,20 @@ public class NDKmolActivity extends Activity {
                 case 4:
                     menu.findItem(R.id.BFactor).setChecked(true);
                     break;
+                case 5:
+                    menu.findItem(R.id.Hydrophobicity).setChecked(true);
+            }
+
+            switch (view.bg_color) {
+                case 0:
+                    menu.findItem(R.id.bgBlack).setChecked(true);
+                    break;
+                case 1:
+                    menu.findItem(R.id.bgWhite).setChecked(true);
+                    break;
+                case 2:
+                    menu.findItem(R.id.bgGray).setChecked(true);
+                    break;
             }
 
             switch (touchMode) {
@@ -551,6 +565,31 @@ public class NDKmolActivity extends Activity {
                 break;
             case R.id.BFactor:
                 view.colorMode = 4;
+                item.setChecked(true);
+                view.prepareScene();
+                glSV.requestRender();
+                break;
+            case R.id.Hydrophobicity:
+                view.colorMode = 5;
+                item.setChecked(true);
+                view.prepareScene();
+                glSV.requestRender();
+                break;
+
+            case R.id.bgBlack:
+                view.bg_color = 0;
+                item.setChecked(true);
+                view.prepareScene();
+                glSV.requestRender();
+                break;
+            case R.id.bgWhite:
+                view.bg_color = 1;
+                item.setChecked(true);
+                view.prepareScene();
+                glSV.requestRender();
+                break;
+            case R.id.bgGray:
+                view.bg_color = 2;
                 item.setChecked(true);
                 view.prepareScene();
                 glSV.requestRender();

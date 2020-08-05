@@ -59,10 +59,8 @@ import java.util.Objects;
 
 public class PubChemSearcher extends Activity {
 
-    private final String pubchemSearchURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=#MAXRESULT#&term=#KEYWORD#";
-    private final String pdbchemDetailURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=#IDs#";
     private final String pubchemDownloadURI = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/#ID#/record/SDF/?record_type=3d";
-    private final int MAXRESULT = 30, MAXSYNONYMS = 5;
+    private final int MAXRESULT = 30;
     private ListView listView = null;
     // when changed, edit NDKmolActivity.readURI accordingly!
     private EditText keyword;
@@ -77,6 +75,7 @@ public class PubChemSearcher extends Activity {
 
         try {
             keyword = URLEncoder.encode(keyword, "UTF-8");
+            String pubchemSearchURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=#MAXRESULT#&term=#KEYWORD#";
             URL url = new URL(pubchemSearchURI.replaceFirst("#KEYWORD#", keyword).replaceFirst("#MAXRESULT#", Integer.toString(MAXRESULT)));
             HttpURLConnection conn;
             if (proxy != null) {
@@ -120,6 +119,7 @@ public class PubChemSearcher extends Activity {
             joined.append(ids.get(i)).append(","); // final ',' doesn't harm
 
         try {
+            String pdbchemDetailURI = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=#IDs#";
             URL url = new URL(pdbchemDetailURI.replaceFirst("#IDs#", joined.toString()));
             HttpURLConnection conn;
             if (proxy != null) {
@@ -159,6 +159,7 @@ public class PubChemSearcher extends Activity {
                 pos = rindex + 1;
                 int peek = entry.indexOf("</Item>", rindex + 1);
                 if (peek - rindex < 30) break;
+                int MAXSYNONYMS = 5;
                 if (cnt++ > MAXSYNONYMS) break;
             }
             records.put("structureId", id);

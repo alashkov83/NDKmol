@@ -60,9 +60,6 @@ import java.util.Objects;
 
 public class PDBSearcher extends Activity {
 
-    private final String pdbSearchString = "<orgPdbQuery><queryType>org.pdb.query.simple.MoleculeNameQuery</queryType><macromoleculeName>#KEYWORD#</macromoleculeName></orgPdbQuery>";
-    private final String pdbRestURI = "http://www.rcsb.org/pdb/rest/search/";
-    private final String pdbDetailSearchURI = "http://www.rcsb.org/pdb/rest/customReport?pdbids=#PDBID#&customReportColumns=structureId,structureTitle,experimentalTechnique,depositionDate,releaseDate,ndbId,resolution,structureAuthor&format=xml";
     private final int MAXRESULT = 100;
     private ListView listView = null;
     private EditText keyword;
@@ -79,6 +76,7 @@ public class PDBSearcher extends Activity {
         }
 
         try {
+            String pdbRestURI = "http://www.rcsb.org/pdb/rest/search/";
             URL url = new URL(pdbRestURI);
             HttpURLConnection conn;
             if (proxy != null) {
@@ -89,6 +87,7 @@ public class PDBSearcher extends Activity {
             conn.setDoOutput(true);
 
             OutputStream os = conn.getOutputStream();
+            String pdbSearchString = "<orgPdbQuery><queryType>org.pdb.query.simple.MoleculeNameQuery</queryType><macromoleculeName>#KEYWORD#</macromoleculeName></orgPdbQuery>";
             String queryStr = pdbSearchString.replaceFirst("#KEYWORD#", keyword);
             PrintStream ps = new PrintStream(os);
             ps.print(queryStr);
@@ -123,6 +122,7 @@ public class PDBSearcher extends Activity {
             joined.append(ids.get(i)).append(","); // final ',' doesn't harm
 
         try {
+            String pdbDetailSearchURI = "http://www.rcsb.org/pdb/rest/customReport?pdbids=#PDBID#&customReportColumns=structureId,structureTitle,experimentalTechnique,depositionDate,releaseDate,ndbId,resolution,structureAuthor&format=xml";
             URL url = new URL(pdbDetailSearchURI.replaceFirst("#PDBID#", joined.toString()));
             HttpURLConnection conn;
             if (proxy != null) {

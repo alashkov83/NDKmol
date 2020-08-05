@@ -5,10 +5,10 @@
     <string name="preferencesTitle">Preferences</string>
     <string name="proxyHost">httpProxyHost</string>
     <string name="proxyHostTitle">HTTP Proxy Host</string>
-    <string name="proxyHostSummary"></string>
+    <string name="proxyHostSummary" translatable="false"></string>
     <string name="proxyPortTitle">HTTP Proxy Port</string>
     <string name="proxyPort">httpProxyPort</string>
-    <string name="proxyPortSummary"></string>
+    <string name="proxyPortSummary" translatable="false"></string>
     <string name="useProxy">useHTTPProxy</string>
     <string name="useProxySummary">select to use HTTP proxy</string>
     <string name="useProxyTitle">Use HTTP Proxy</string>
@@ -76,4 +76,9 @@
     <string name="First50K">First 50 KB of the file:</string>
     <string name="GoToSite">Go to website</string>
     <string name="make_screenshot">Make screenshot</string>
+    <string name="background">Background</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="gray">Gray</string>
+    <string name="hydrophobicity">By Hydrophobicity</string>
 </resources>

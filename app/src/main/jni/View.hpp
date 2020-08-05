@@ -55,5 +55,10 @@ extern int width, height;
 #define COLOR_SS 2
 #define COLOR_POLAR 3
 #define COLOR_B_FACTOR 4
+#define COLOR_HYDROPHOBICITY 5
+
+#define BG_COLOR_BLACK 0
+#define BG_COLOR_WHITE 1
+#define BG_COLOR_GRAY 2
 
 #endif

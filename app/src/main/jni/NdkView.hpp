@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLInit
-        (JNIEnv *, jclass);
+        (JNIEnv *, jclass, jint);
 
 /*
  * Class:     com_github_alashkov83_NDKmol_NdkView
@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLResize
  */
 JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLRender
         (JNIEnv *, jclass, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat,
-         jfloat);
+         jfloat, jint);
 
 /*
  * Class:     com_github_alashkov83_NDKmol_NdkView

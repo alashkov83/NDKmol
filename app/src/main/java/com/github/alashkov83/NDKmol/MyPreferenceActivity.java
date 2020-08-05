@@ -19,12 +19,12 @@
 
 package com.github.alashkov83.NDKmol;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
 
-public class MyPreferenceActivity extends PreferenceActivity {
+public class MyPreferenceActivity extends Activity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -51,31 +51,51 @@
 #define COLOR_SS 2
 #define COLOR_POLAR 3
 #define COLOR_B_FACTOR 4
+#define COLOR_HYDROPHOBICITY 5
+
+#define BG_COLOR_BLACK 0
+#define BG_COLOR_WHITE 1
+#define BG_COLOR_GRAY 2
 
 typedef struct {
 	float objX, objY, objZ; // centering
 	float prevObjX, prevObjY, prevObjZ; // used by updateMesh
 	float ax, ay, az, rot; // rotation axis and angle
 	float cameraZ, slabNear, slabFar;
-	
+
 	Mat16 projectionMatrix, rotationGroupMatrix, modelGroupMatrix;
 } SceneInfo;
 
 extern SceneInfo sceneInfo;
 
-extern void nativeGLResize (int width, int height);
-extern void nativeSetScene(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
-                           float cameraZ, float slabNear, float slabFar);
-extern void nativeGLRender(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
-                           float cameraZ, float slabNear, float slabFar);
-extern void nativeGLRender();
-extern void nativeLoadProtein(const char* filename);
-extern void nativeLoadCCP4(const char* filename);
-extern void nativeLoadSDF(const char* filename);
+extern void nativeGLResize(int width, int height);
+
+extern void
+nativeSetScene(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
+			   float cameraZ, float slabNear, float slabFar);
+
+extern void
+nativeGLRender(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
+			   float cameraZ, float slabNear, float slabFar, int bg_color);
+
+extern void nativeGLRender(int bg_color);
+
+extern void nativeLoadProtein(const char *filename);
+
+extern void nativeLoadCCP4(const char *filename);
+
+extern void nativeLoadSDF(const char *filename);
+
 extern void nativeUpdateMap(bool force);
+
 extern void nativeAdjustZoom(float *, float *, float *, float *, float *, float *, bool);
-extern void buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode, bool showSidechain, bool showUnitcell,
-				int nucleicAcidMode, bool showSolvents, bool resetView, bool doNotSmoothen, bool symopHetatms);
-extern void nativeGLInit();
+
+extern void
+buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode, bool showSidechain,
+		   bool showUnitcell,
+		   int nucleicAcidMode, bool showSolvents, bool resetView, bool doNotSmoothen,
+		   bool symopHetatms);
+
+extern void nativeGLInit(int bg_color);
 
 #endif

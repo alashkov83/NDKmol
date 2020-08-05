@@ -86,6 +86,8 @@ void colorByBFactor(std::vector<int> &atomlist);
 
 void colorByPolarity(std::vector<int> &atomlist, Color polar, Color nonPolar);
 
+void colorByHydrophobicity(std::vector<int> &atomlist);
+
 void colorByResidue(std::vector<int> &atomlist, std::map<std::string, Color> colorMap);
 
 void drawMainchainCurve(Renderable &scene, std::vector<int> &atomlist, float curveWidth,
@@ -131,10 +133,10 @@ extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nati
 
 // onDrawFrame
 extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLRender
-        (JNIEnv *env, jclass clasz, jfloat objX, jfloat objY, jfloat objZ,
-         jfloat ax, jfloat ay, jfloat az, jfloat rot, jfloat cameraZ, jfloat slabNear,
-         jfloat slabFar) {
-    nativeGLRender(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar);
+		(JNIEnv *env, jclass clasz, jfloat objX, jfloat objY, jfloat objZ,
+		 jfloat ax, jfloat ay, jfloat az, jfloat rot, jfloat cameraZ, jfloat slabNear,
+		 jfloat slabFar, jint bg_color) {
+	nativeGLRender(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar, bg_color);
 }
 
 // loadProtein
@@ -174,8 +176,8 @@ extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nati
 
 // onSurfaceCreated
 extern "C" JNIEXPORT void JNICALL Java_com_github_alashkov83_NDKmol_NdkView_nativeGLInit
-        (JNIEnv *env, jclass clasz) {
-    nativeGLInit();
+		(JNIEnv *env, jclass clasz, jint bg_color) {
+	nativeGLInit(bg_color);
 }
 
 // prepareScene
@@ -246,14 +248,33 @@ void nativeSetScene(float objX, float objY, float objZ, float ax, float ay, floa
 
 // Left for compatibility reason
 void nativeGLRender(float objX, float objY, float objZ, float ax, float ay, float az, float rot,
-					float cameraZ, float slabNear, float slabFar) {
+					float cameraZ, float slabNear, float slabFar, int bg_color) {
 	nativeSetScene(objX, objY, objZ, ax, ay, az, rot, cameraZ, slabNear, slabFar);
-	nativeGLRender();
+	nativeGLRender(bg_color);
 }
 
-void nativeGLRender() {
+void nativeGLRender(int bg_color) {
 	if (scene == nullptr) return;
-	glClearColor(0, 0, 0, 1); // TODO: Set bg color
+	float r = 0;
+	float g = 0;
+	float b = 0;
+	switch (bg_color) {
+		case BG_COLOR_BLACK:
+			r = 0;
+			g = 0;
+			b = 0;
+			break;
+		case BG_COLOR_WHITE:
+			r = 1;
+			g = 1;
+			b = 1;
+			break;
+		case BG_COLOR_GRAY:
+			r = 0.7;
+			g = 0.7;
+			b = 0.7;
+	}
+	glClearColor(r, g, b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CULL_FACE);
 
@@ -398,6 +419,8 @@ void buildScene(int proteinMode, int hetatmMode, int symmetryMode, int colorMode
 		case COLOR_B_FACTOR:
 			colorByBFactor(all);
 			break;
+		case COLOR_HYDROPHOBICITY:
+			colorByHydrophobicity(all);
 	}
 
 	switch (proteinMode) {
@@ -493,8 +516,27 @@ void nativeUpdateMap(bool force) {
 			  mapIsoLevel);
 }
 
-void nativeGLInit() {
-	glClearColor(0, 0, 0, 1); // TODO: Set bg color
+void nativeGLInit(int bg_color) {
+	float r = 0;
+	float g = 0;
+	float b = 0;
+	switch (bg_color) {
+		case BG_COLOR_BLACK:
+			r = 0;
+			g = 0;
+			b = 0;
+			break;
+		case BG_COLOR_WHITE:
+			r = 1;
+			g = 1;
+			b = 1;
+			break;
+		case BG_COLOR_GRAY:
+			r = 0.7;
+			g = 0.7;
+			b = 0.7;
+	}
+	glClearColor(r, g, b, 1);
 	glEnable(GL_DEPTH_TEST);
 //  glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -545,12 +587,12 @@ void nativeGLInit() {
 
 #ifndef __ANDROID__
 #ifdef OPENGL_ES1
-	glEnable(GL_FOG);
-	glFogf(GL_FOG_MODE, GL_LINEAR); // EXP, EXP2 is not supported?
-	float f6[] = {0, 0, 0, 1};
-	glFogfv(GL_FOG_COLOR, f6);
-	glFogf(GL_FOG_DENSITY, 0.3f);
-	glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glEnable(GL_FOG);
+    glFogf(GL_FOG_MODE, GL_LINEAR); // EXP, EXP2 is not supported?
+    float f6[] = {r, g, b, 1};
+    glFogfv(GL_FOG_COLOR, f6);
+    glFogf(GL_FOG_DENSITY, 0.3f);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
 #endif
     
 #endif
@@ -772,21 +814,69 @@ void colorByPolarity(std::vector<int> &atomlist, Color polar, Color nonPolar) {
     std::vector<std::string> polarResidues = {"ARG", "HIS", "LYS", "ASP", "GLU", "SER", "THR",
                                               "ASN", "GLN", "CYS"};
     std::vector<std::string> nonPolarResidues = {"GLY", "PRO", "ALA", "VAL", "LEU", "ILE", "MET",
-                                                 "PHE", "TYR", "TRP"};
-    std::map<std::string, Color> colorMap;
-    for (const auto &res: polarResidues) {
-        colorMap[res] = polar;
-    }
-    for (const auto &res: nonPolarResidues) {
-        colorMap[res] = nonPolar;
-    }
-    colorByResidue(atomlist, colorMap);
+												 "PHE", "TYR", "TRP"};
+	std::map<std::string, Color> colorMap;
+	for (const auto &res: polarResidues) {
+		colorMap[res] = polar;
+	}
+	for (const auto &res: nonPolarResidues) {
+		colorMap[res] = nonPolar;
+	}
+	colorByResidue(atomlist, colorMap);
+}
+
+void colorByHydrophobicity(std::vector<int> &atomlist) {
+	// J. Kyte, R. F. Doolittle. A simple method for displaying the hydropathic character of a protein
+	// Journal of Molecular Biology. — 1982-05-05. — Т. 157, вып. 1. — С. 105—132. — ISSN 0022-2836.
+	std::map<std::string, Color> colorMap = std::map<std::string, Color>();
+	std::map<std::string, float> hydromap = {{"ARG", -4.5f},
+											 {"HIS", -3.2f},
+											 {"LYS", -3.9f},
+											 {"ASP", -3.5f},
+											 {"GLU", -3.5f},
+											 {"SER", -0.8f},
+											 {"THR", -0.7f},
+											 {"ASN", -3.5f},
+											 {"GLN", -3.5f},
+											 {"CYS", 2.5f},
+											 {"GLY", -0.4f},
+											 {"PRO", -1.6f},
+											 {"ALA", 1.8f},
+											 {"VAL", 4.2f},
+											 {"LEU", 3.8f},
+											 {"ILE", 4.5f},
+											 {"MET", 1.9f},
+											 {"PHE", 2.8f},
+											 {"TYR", -1.3f},
+											 {"TRP", -0.9f}};
+	float min_h = min_element(hydromap.begin(), hydromap.end(),
+							  [](decltype(hydromap)::value_type &l,
+								 decltype(hydromap)::value_type &r)
+									  -> bool { return l.second < r.second; })->second;
+	float max_h = min_element(hydromap.begin(), hydromap.end(),
+							  [](decltype(hydromap)::value_type &l,
+								 decltype(hydromap)::value_type &r)
+									  -> bool { return l.second > r.second; })->second;
+
+	for (auto &it: hydromap) {
+		std::string res = it.first;
+		float hyd = it.second;
+		Color color = Color();
+		if (hyd < 0) {
+			color.setHSV(0.667f, std::log2(std::abs(hyd)) / std::log2(std::abs(min_h)), 1);
+		} else {
+			color.setHSV(0.06f, std::log2(std::abs(hyd)) / std::log2(std::abs(max_h)), 1);
+		}
+		colorMap.insert(std::pair<std::string, Color>(res, color));
+	}
+	colorByResidue(atomlist, colorMap);
 }
 
 void drawAtomsAsStar(Renderable &scene, std::vector<int> &atomlist, float delta) {
 	std::vector<Vector3> points;
 	std::vector<Color> colors;
-	float pointsBase[] = {delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0, -delta};
+	float pointsBase[] = {delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0, -delta, 0, 0, 0, delta, 0, 0,
+						  -delta};
 
 	for (int i : atomlist) {
 		Atom *atom = atoms + i;

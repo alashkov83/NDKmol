@@ -49,7 +49,7 @@ float ChemDatabase::getVdwRadius(const std::string& elem) {
 
 void ChemDatabase::prepare() {
 	ElementColors.insert(std::make_pair("H", 0xCCCCCCU));
-	ElementColors.insert(std::make_pair("C", 0xAAAAAAU));
+	ElementColors.insert(std::make_pair("C", 0x909090U));
 	ElementColors.insert(std::make_pair("O", 0xCC0000U));
 	ElementColors.insert(std::make_pair("N", 0x0000CCU));
 	ElementColors.insert(std::make_pair("S", 0xCCCC00U));

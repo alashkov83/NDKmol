@@ -200,10 +200,10 @@ public class NDKmolActivity extends Activity {
         String scheme = uri.substring(0, 7);
         if (scheme.equals("file://")) {
             openFile(uri.substring(7));
-        } else if (scheme.equals("http://")) {
+        } else if (scheme.equals("http://") || scheme.equals("https:/")) {
             String fileName = uri.substring(uri.lastIndexOf('/') + 1);
             if (uri.contains("record_type=3d")) {
-                int start = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/".length();
+                int start = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/".length();
                 int index = uri.indexOf("/record/SDF/?record_type=3d");
                 if (index < 0) return;
 

@@ -3,7 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">www.rcsb.org</domain>
         <domain includeSubdomains="true">files.rcsb.org</domain>
-        <domain includeSubdomains="true">eutils.ncbi.nlm.nih.gov</domain>
-        <domain includeSubdomains="true">pubchem.ncbi.nlm.nih.gov</domain>
     </domain-config>
 </network-security-config>
